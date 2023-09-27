@@ -8,8 +8,6 @@ app.use(cors());
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
-console.log(123);//test
-
 app.get('/express_backend', (req, res) => {
     res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
 }); 
