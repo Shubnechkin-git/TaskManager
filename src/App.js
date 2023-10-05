@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import bridge from '@vkontakte/vk-bridge';
+import VKBridge from '@vkontakte/vk-bridge';
 import '@vkontakte/vkui/dist/vkui.css';
 import { View, AdaptivityProvider, AppRoot, ConfigProvider, SplitLayout, SplitCol } from '@vkontakte/vkui';
 
@@ -18,16 +18,20 @@ const App = () => {
 	const [state, setState] = useState(null);
 
 	const callBackendAPI = async () => {
-		const response = await fetch('/express_backend').then(response => response.json())
-			.then(data => {
-				console.log(data);
-			});
-		const body = await response.json();
+		try {
+			const response = await fetch('http://localhost:5000/api');
 
-		if (response.status !== 200) {
-			throw Error(body.message)
+			if (!response.ok) {
+				throw new Error('Ошибка запроса');
+			}
+
+			const data = await response.json();
+			console.log(data);
+			return data;
+		} catch (error) {
+			console.error('Ошибка при запросе к API:', error);
+			// Обработка ошибки
 		}
-		return body;
 	};
 
 	// получение GET маршрута с сервера Express, который соответствует GET из server.js 
@@ -37,18 +41,28 @@ const App = () => {
 			.catch(err => console.log(err));
 	}, [])
 
-	useEffect(() => {
-		async function fetchData() {
-			const user = await bridge.send('VKWebAppGetUserInfo');
-			setUser(user);
-			setPopout(null);
-		}
-		fetchData();
-	}, []);
-
 	const go = e => {
 		setActivePanel(e.currentTarget.dataset.to);
 	};
+
+	// Vk bridge start
+	const [userId, setUserId] = useState(null);
+
+	useEffect(() => {
+		// Функция для получения ID пользователя через VK Bridge
+		const fetchUserId = async () => {
+			try {
+				const userInfo = await VKBridge.send('VKWebAppGetUserInfo');
+				setUserId(userInfo.id);
+			} catch (error) {
+				console.error('Ошибка при получении информации о пользователе:', error);
+			}
+		};
+
+		// Вызываем функцию при монтировании компонента
+		fetchUserId();
+	}, []);
+	// Vk bridge end
 
 	return (
 		<ConfigProvider>
@@ -57,7 +71,7 @@ const App = () => {
 					<SplitLayout popout={popout}>
 						<SplitCol>
 							<View activePanel={activePanel}>
-								<Slider id='slider' go={go} fetchedUser={fetchedUser} />
+								<Slider id='slider' go={go} userId={userId} />
 								<Home id='home' go={go} />
 								<Quest id='quest' go={go} />
 							</View>

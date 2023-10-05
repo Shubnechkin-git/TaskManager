@@ -8,43 +8,19 @@ import { Panel } from '@vkontakte/vkui';
 import PropTypes from 'prop-types';
 import axios from 'axios'
 
-import bridge from '@vkontakte/vk-bridge';
+const Slider = ({ id, go, userId }) => {
 
 
-// Отправляет событие нативному клиенту
-// bridge.send("VKWebAppInit", {});   
-
-// bridge.send('VKWebAppGetEmail')
-// .then((data) => {
-//     if (data.result) {
-//         // Обработка события в случае успеха
-//         console.log("1");
-//     } else {
-//         // Ошибка
-//     }
-// })
-// .catch((error) => {
-//     // Обработка события в случае ошибки
-//     console.log(error);
-// });
-
-// bridge.subscribe((e) => console.log(e)); 
-
-const Slider = ({ id, go }) => {
-    
-    // Выполнение GET-запроса
-    axios.get('http://localhost:5000/test', {
-        params: {
-            ID: 12345,
-            sdfsd: "3434"
-        }
-    })
-    .then(function (response) {
-            console.log(response);
+    if (userId !== undefined && userId !== null) {
+        console.log(userId);
+        axios.get('http://localhost:5000/api', {
+            params: {
+                userId: userId,
+                check: true,
+            }
         })
-        .catch(function (error) {
-            console.log(error);
-        });
+    }
+    // Выполнение GET-запроса
 
     const setIndicator = (index) => {
         let one = document.getElementById("one");

@@ -18,6 +18,7 @@
         "@vkontakte/icons": "2.7.0",
         "@vkontakte/vk-bridge": "latest",
         "@vkontakte/vk-miniapps-deploy": "^0.0.25",
+        "@vkontakte/vk-tunnel": "^0.1.4",
         "@vkontakte/vkui": "5.1.0",
         "axios": "^1.5.0",
         "babel-eslint": "^10.1.0",
@@ -29,11 +30,13 @@
         "eruda-code": "^2.0.0",
         "eruda-dom": "^2.0.0",
         "express": "^4.18.2",
+        "http-proxy-middleware": "^2.0.6",
         "node-gyp": "^9.4.0",
         "prop-types": "^15.7.2",
         "react": "^17.0.2",
         "react-bootstrap": "^2.8.0",
         "react-dom": "^17.0.2",
+        "sqlite3": "^5.1.6",
         "swiper": "^10.3.0"
     },
     "devDependencies": {

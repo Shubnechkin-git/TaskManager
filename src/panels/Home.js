@@ -4,14 +4,12 @@ import PropTypes from 'prop-types';
 import { Panel, PanelHeader, PanelHeaderButton, Input, Header, Button, Group, ButtonGroup, FormItem, FormLayout, Card, CardGrid } from '@vkontakte/vkui';
 import { Icon16DeleteOutline, Icon16PenOutline, Icon24AddOutline, Icon16ArticleBoxOutline, Icon16Add, Icon16Minus } from '@vkontakte/icons';
 
+import HeaderMy from '../Components/HeaderMy'
+
 const Home = ({ id, go, fetchedUser }) => (
 	<Panel id={id}>
-		<PanelHeader
-			before={
-				<PanelHeaderButton>
-					<Icon24AddOutline onClick={go} data-to="quest" />
-				</PanelHeaderButton>
-			}>Главная</PanelHeader>
+
+		<HeaderMy />
 
 		<Group header={<Header mode="secondary">Ваши задачи</Header>}>
 			<FormLayout>
