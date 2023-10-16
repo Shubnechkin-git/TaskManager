@@ -32,6 +32,7 @@ app.get('/api', async (req, res) => {
     let test = await test2(req.query.userId);
     console.log("srftrtyrt ", test);
     try {
+        console.log(req);
         const userId = req.query.userId;
         const check = req.query.check;
 

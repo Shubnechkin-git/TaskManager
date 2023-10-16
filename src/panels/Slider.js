@@ -7,6 +7,15 @@ import SlideImage1 from '../Assets/Slider/Slide_1.jpg'
 import { Panel } from '@vkontakte/vkui';
 import PropTypes from 'prop-types';
 import axios from 'axios'
+import styled from 'styled-components'
+
+const Styled = styled.div`
+.btn.disabled, .btn:disabled, fieldset:disabled .btn{
+    background-color: #696969;
+    border-color: #696969;
+}
+`
+
 
 const Slider = ({ id, go, userId }) => {
 
@@ -133,7 +142,9 @@ const Slider = ({ id, go, userId }) => {
                         <div className='four' id='four'></div>
                     </div>
                     <div className='slider__btn'>
-                        <Button className='w-100 disabled' id="btn" onClick={go} data-to="home">ПОНЯТНО</Button>
+                        <Styled>
+                            <Button className='w-100 disabled' id="btn" onClick={go} data-to="home">ПОНЯТНО</Button>
+                        </Styled>
                     </div>
                 </Swiper >
             </div>
