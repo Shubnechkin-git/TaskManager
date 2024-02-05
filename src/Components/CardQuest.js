@@ -204,7 +204,7 @@ export default function CardQuest() {
                 <div className='card_quest mb-5'>
                     <div className='header_quest d-flex justify-content-between align-items-center'>
                         <div>
-                            <span className='fw-bold'>Задача 2.</span>
+                            <span className='fw-bold'>Задача 3.</span>
                         </div>
                         <div className='btn_group d-flex'>
                             <div>
