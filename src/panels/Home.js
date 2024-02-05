@@ -9,6 +9,7 @@ import NavbarMy from '../Components/NavbarMy'
 import CreateQuestBtn from '../Components/Button/CreateQuestBtn';
 
 import styled from 'styled-components';
+import CardQuest from '../Components/CardQuest';
 
 const Styled = styled.div`
 	margin-top:	48px;
@@ -17,13 +18,13 @@ const Styled = styled.div`
 const Home = (props) => (
 	<Panel id={props.id}>
 		<Styled>
-
 			<HeaderMy displayName="Главный экран" go={props.go} leftBtn={<CreateQuestBtn go={props.go} />} />
 
 			<Group header={<Header mode="secondary">Ваши задачи</Header>}>
 				<FormLayout>
 					<FormItem>
 						<Group mode="plain" size="l">
+							<CardQuest />
 							<CardGrid size="l">
 								<Card mode="outline">
 									{/* <div style={{ height: 96 }} /> */}
@@ -78,7 +79,7 @@ const Home = (props) => (
 					</FormItem>
 				</FormLayout>
 			</Group>
-			<NavbarMy go={props.go} titleBtn='home'/>
+			<NavbarMy go={props.go} titleBtn='home' />
 		</Styled >
 	</Panel>
 );
