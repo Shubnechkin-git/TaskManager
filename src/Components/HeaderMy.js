@@ -78,7 +78,7 @@ const HeaderMy = (props) => {
 
 HeaderMy.propTypes = {
     displayName: PropTypes.string,
-    id: PropTypes.string.isRequired,
+    // id: PropTypes.string.isRequired,
     go: PropTypes.func.isRequired,
 }
 

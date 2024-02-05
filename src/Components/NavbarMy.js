@@ -80,9 +80,9 @@ const NavbarMy = (props) => {
 }
 
 NavbarMy.propTypes = {
-    id: PropTypes.string.isRequired,
+    // id: PropTypes.string.isRequired,
     go: PropTypes.func.isRequired,
-    changePanel: PropTypes.func.isRequired
+    // changePanel: PropTypes.func.isRequired
 }
 
 export default NavbarMy;

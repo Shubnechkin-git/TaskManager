@@ -15,7 +15,7 @@ const CreateQuestBtn = (props) => {
 }
 
 CreateQuestBtn.propTypes = {
-    id: PropTypes.string.isRequired,
+    // id: PropTypes.string.isRequired,
     go: PropTypes.func.isRequired,
 };
 
