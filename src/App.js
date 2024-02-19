@@ -5,7 +5,7 @@ import '@vkontakte/vkui/dist/vkui.css';
 import { View, AdaptivityProvider, AppRoot, ConfigProvider, SplitLayout, SplitCol } from '@vkontakte/vkui';
 
 import Home from './panels/Home';
-// import Quest from './panels/Quest';
+import Quest from './panels/Quest';
 import CreateQuest from "./panels/Quest/CreateQuest";
 import Slider from './panels/Slider';
 import Notification from './panels/Notification/Notification';
@@ -37,11 +37,11 @@ const App = () => {
 	};
 
 	// получение GET маршрута с сервера Express, который соответствует GET из server.js 
-	useEffect(() => {
-		callBackendAPI()
-			.then(res => setState(res.express))
-			.catch(err => console.log(err));
-	}, [])
+	// useEffect(() => {
+	// 	callBackendAPI()
+	// 		.then(res => setState(res.express))
+	// 		.catch(err => console.log(err));
+	// }, [])
 
 	const go = e => {
 		setActivePanel(e.currentTarget.dataset.to);
@@ -75,7 +75,7 @@ const App = () => {
 							<View activePanel={activePanel}>
 								<Slider id='slider' go={go} userId={userId} />
 								<Home id='home' go={go} />
-								{/* <Quest id='quest' go={go} /> */}
+								<Quest id='quest' go={go} />
 								<CreateQuest id='CreateQuest' go={go} />
 								<Notification id='Notification' go={go} />
 								<Calendar id='calendar' go={go} />

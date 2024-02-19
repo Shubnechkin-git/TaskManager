@@ -20,61 +20,11 @@ const Home = (props) => (
 		<Styled>
 			<HeaderMy displayName="Главный экран" go={props.go} leftBtn={<CreateQuestBtn go={props.go} />} />
 
-			<Group header={<Header mode="secondary">Ваши задачи</Header>}>
+			<Group className='mt-4 mb-4' header={<Header mode="secondary">Ваши задачи</Header>}>
 				<FormLayout>
 					<FormItem>
 						<Group mode="plain" size="l">
 							<CardQuest />
-							<CardGrid size="l">
-								<Card mode="outline">
-									{/* <div style={{ height: 96 }} /> */}
-									<FormItem top="Название" htmlFor="title_quest">
-										<Input type="text" id='title_quest' placeholder="Задача №1" before={<Icon16ArticleBoxOutline />} />
-									</FormItem>
-									<FormItem>
-										<ButtonGroup mode="horizontal" gap="m" stretched>
-											<Button before={<Icon16PenOutline />} mode='outline'>Редактировать</Button>
-											<Button before={<Icon16DeleteOutline />} mode='outline'>Удалить</Button>
-										</ButtonGroup>
-									</FormItem>
-								</Card>
-							</CardGrid>
-						</Group>
-					</FormItem>
-					<FormItem>
-						<Group mode="plain" size="l">
-							<CardGrid size="l">
-								<Card mode="outline">
-									{/* <div style={{ height: 96 }} /> */}
-									<FormItem top="Название" htmlFor="title_quest">
-										<Input type="text" id='title_quest' placeholder="Задача №1" before={<Icon16ArticleBoxOutline />} />
-									</FormItem>
-									<FormItem>
-										<ButtonGroup mode="horizontal" gap="m" stretched>
-											<Button before={<Icon16PenOutline />} mode='outline'>Редактировать</Button>
-											<Button before={<Icon16DeleteOutline />} mode='outline'>Удалить</Button>
-										</ButtonGroup>
-									</FormItem>
-								</Card>
-							</CardGrid>
-						</Group>
-					</FormItem>
-					<FormItem>
-						<Group mode="plain" size="l">
-							<CardGrid size="l">
-								<Card mode="outline">
-									{/* <div style={{ height: 96 }} /> */}
-									<FormItem top="Название" htmlFor="title_quest">
-										<Input type="text" id='title_quest' placeholder="Задача №1" before={<Icon16ArticleBoxOutline />} />
-									</FormItem>
-									<FormItem>
-										<ButtonGroup mode="horizontal" gap="m" stretched>
-											<Button before={<Icon16PenOutline />} mode='outline'>Редактировать</Button>
-											<Button before={<Icon16DeleteOutline />} mode='outline'>Удалить</Button>
-										</ButtonGroup>
-									</FormItem>
-								</Card>
-							</CardGrid>
 						</Group>
 					</FormItem>
 				</FormLayout>

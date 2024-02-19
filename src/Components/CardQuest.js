@@ -22,10 +22,20 @@ const Styled = styled.div`
         font-size: 16px;
     }
     .quest_list ul{
-        margin-left:20px;
         margin-top:20px;
         padding-right:20px;
+        padding-left:20px;
     }
+
+    .quest_list li{
+        margin-top:7px;
+        margin-bottom:7px;
+    }
+
+    .quest_list li::marker {
+        content: none;
+    }
+
     .quest_head{
         padding:12px;
         padding-bottom: 0px;
@@ -78,6 +88,25 @@ const Styled = styled.div`
     svg{
         cursor:pointer;
     }
+
+    .check_list{
+        height: 24px;
+        width: 24px;
+        background-color: #292929;;
+        cursor: pointer;
+        border-radius: 10px;
+        margin-right: 12px; 
+    }
+
+    .check_list_add{
+        height: 24px;
+        width: 24px;
+        background-color: #7A7A7A;
+        cursor: pointer;
+        border-radius: 10px;
+        margin-right: 12px; 
+    }
+
     `
 
 export default function CardQuest() {
@@ -118,18 +147,18 @@ export default function CardQuest() {
                             <div className='img'></div>
                             <div className='quest_list d-flex justify-content-start align-items-center w-100'>
                                 <ul className='d-flex justify-content-center flex-column'>
-                                    <li>
-                                        <span>Русский язык</span>
+                                    <li className='d-flex'>
+                                        <div className='check_list'></div><span>Русский язык</span>
                                     </li>
-                                    <li>
-                                        <span className='add'>Добавить</span>
+                                    <li className='d-flex'>
+                                        <div className='check_list_add'></div><span className='add'>Добавить</span>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                         <div className='quest_foot'>
                             <div className='quest_description'>
-                            <textarea readOnly value="Lorem ipsum dolor sit amet consectetur. Nunc nunc magna aliquet nulla dis turpis massa. Felis consectetur pulvinar vestibulum adipiscing volutpat dolor vel. Mollis bibendum tortor velit feugiat vulputate massa. Cras amet lorem gravida in. Posuere nibh scelerisque in tristique volutpat. Orci aliquam molestie amet a. Suspendisse tincidunt natoque tristique a. Duis in egestas habitant feugiat imperdiet proin. Pharetra justo mollis lacus ac cras.">
+                                <textarea readOnly value="Lorem ipsum dolor sit amet consectetur. Nunc nunc magna aliquet nulla dis turpis massa. Felis consectetur pulvinar vestibulum adipiscing volutpat dolor vel. Mollis bibendum tortor velit feugiat vulputate massa. Cras amet lorem gravida in. Posuere nibh scelerisque in tristique volutpat. Orci aliquam molestie amet a. Suspendisse tincidunt natoque tristique a. Duis in egestas habitant feugiat imperdiet proin. Pharetra justo mollis lacus ac cras.">
                                 </textarea>
                             </div>
                         </div>
@@ -184,11 +213,11 @@ export default function CardQuest() {
                             </div>
                             <div className='quest_list d-flex justify-content-start align-items-center w-100'>
                                 <ul className='d-flex justify-content-center flex-column'>
-                                    <li>
-                                        <span>Русский язык</span>
+                                    <li className='d-flex'>
+                                        <div className='check_list'></div><span>Русский язык</span>
                                     </li>
-                                    <li>
-                                        <span className='add'>Добавить</span>
+                                    <li className='d-flex'>
+                                        <div className='check_list_add'></div><span className='add'>Добавить</span>
                                     </li>
                                 </ul>
                             </div>
