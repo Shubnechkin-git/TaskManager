@@ -9,11 +9,34 @@ import HeaderMy from '../../Components/HeaderMy';
 
 import BackBtn from '../../Components/Button/BackBtn';
 
+import ReadyThemes from '../../Components/ReadyThemes';
+import CreateTheme from '../../Components/CreateTheme';
+import ContactDev from '../../Components/ContactDev';
+
+const Styled = styled.div`
+	margin-top:	48px;
+`
+
 const Settings = (props) => {
     return (
         <>
-            <HeaderMy displayName="Настройки" go={props.go} leftBtn={<BackBtn go={props.go} />} />
-            <NavbarMy go={props.go} titleBtn='settings' />
+            <Panel id={props.id}>
+                <HeaderMy displayName="Настройки" go={props.go} leftBtn={<BackBtn go={props.go} />} />
+                <Styled>
+                    <Group className='mt-4 mb-4'>
+                        <FormLayout>
+                            <FormItem>
+                                <Group mode="plain" size="l">
+                                    <ReadyThemes />
+                                    <CreateTheme />
+                                    <ContactDev />
+                                </Group>
+                            </FormItem>
+                        </FormLayout>
+                    </Group>
+                </Styled>
+                <NavbarMy go={props.go} titleBtn='settings' />
+            </Panel>
         </>)
 }
 

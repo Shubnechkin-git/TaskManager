@@ -13,7 +13,7 @@ import Calendar from './panels/Calendar/Calendar';
 import Settings from './panels/Setting/Settings';
 
 const App = () => {
-	const [activePanel, setActivePanel] = useState('home');
+	const [activePanel, setActivePanel] = useState('settings');
 	const [fetchedUser, setUser] = useState(null);
 	const [popout, setPopout] = useState(null);
 

@@ -16,7 +16,7 @@ const BackBtn = (props) => {
 }
 
 BackBtn.propTypes = {
-    id: PropTypes.string.isRequired,
+    // id: PropTypes.string.isRequired,
     go: PropTypes.func.isRequired,
 };
 

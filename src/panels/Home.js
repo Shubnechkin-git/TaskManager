@@ -29,6 +29,7 @@ const Home = (props) => (
 					</FormItem>
 				</FormLayout>
 			</Group>
+
 			<NavbarMy go={props.go} titleBtn='home' />
 		</Styled >
 	</Panel>

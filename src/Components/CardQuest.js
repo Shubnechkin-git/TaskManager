@@ -92,7 +92,7 @@ const Styled = styled.div`
     .check_list{
         height: 24px;
         width: 24px;
-        background-color: #292929;;
+        background-color: #292929;
         cursor: pointer;
         border-radius: 10px;
         margin-right: 12px; 
@@ -106,7 +106,6 @@ const Styled = styled.div`
         border-radius: 10px;
         margin-right: 12px; 
     }
-
     `
 
 export default function CardQuest() {
@@ -212,7 +211,7 @@ export default function CardQuest() {
                                 </svg>
                             </div>
                             <div className='quest_list d-flex justify-content-start align-items-center w-100'>
-                                <ul className='d-flex justify-content-center flex-column'>
+                                <ul className='d-flex flex-column'>
                                     <li className='d-flex'>
                                         <div className='check_list'></div><span>Русский язык</span>
                                     </li>
