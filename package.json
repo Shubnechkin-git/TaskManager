@@ -1,0 +1,69 @@
+{
+    "name": "mini-app",
+    "version": "0.0.0",
+    "scripts": {
+        "start": "concurrently \"cross-env PORT=10888 HTTPS=true react-scripts start\" \"vk-tunnel --insecure=1 --http-protocol=https --ws-protocol=wss --host=0.0.0.0 --port=10888\"",
+        "build": "react-scripts build",
+        "predeploy": "npm run build",
+        "deploy": "vk-miniapps-deploy",
+        "tunnel": "vk-tunnel --insecure=1 --http-protocol=https --ws-protocol=wss --host=localhost --port=10888 --timeout=5000",
+        "fix": "rm ~/.config/configstore/@vkontakte/vk-miniapps-deploy.json"
+    },
+    "engines": {
+        "node": ">=12.0.0"
+    },
+    "keywords": [],
+    "license": "MIT",
+    "dependencies": {
+        "@popperjs/core": "^2.11.8",
+        "@vkontakte/icons": "2.7.0",
+        "@vkontakte/vk-bridge": "latest",
+        "@vkontakte/vk-miniapps-deploy": "^0.0.25",
+        "@vkontakte/vk-tunnel": "^0.1.4",
+        "@vkontakte/vkui": "5.1.0",
+        "axios": "^1.5.0",
+        "babel-eslint": "^10.1.0",
+        "bootstrap": "^5.3.2",
+        "caniuse-lite": "^1.0.30001514",
+        "concurrently": "^8.2.0",
+        "cors": "^2.8.5",
+        "eruda": "^2.4.1",
+        "eruda-code": "^2.0.0",
+        "eruda-dom": "^2.0.0",
+        "express": "^4.18.2",
+        "http-proxy": "^1.18.1",
+        "http-proxy-middleware": "^2.0.6",
+        "node-gyp": "^9.4.0",
+        "prop-types": "^15.7.2",
+        "react": "^17.0.2",
+        "react-bootstrap": "^2.8.0",
+        "react-dom": "^17.0.2",
+        "sqlite3": "^5.1.6",
+        "styled-components": "^6.0.8",
+        "swiper": "^10.3.0"
+    },
+    "devDependencies": {
+        "cross-env": "^7.0.3",
+        "react-hot-loader": "^4.13.0",
+        "react-scripts": "^5.0.1"
+    },
+    "resolutions": {
+        "react-scripts/webpack-dev-server/yargs/yargs-parser": ">=18.1.2"
+    },
+    "overrides": {
+        "es5-ext@^0.10.50": "0.10.53"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "proxy": "http://localhost:5000"
+}
