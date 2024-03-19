@@ -16,10 +16,10 @@ import bridge from '@vkontakte/vk-bridge';
 import axios from 'axios';
 
 const App = () => {
-	// // axios.get('/database/user/id/1')
-	// axios.get('/database/user', {
+	// axios.get('/database/user/id/1')
+	// axios.get('/user', {
 	// 	params: {
-	// 		id: 1
+	// 		id: 16
 	// 	}
 	// })
 	// 	.then(function (response) {
@@ -73,7 +73,8 @@ const App = () => {
 				setUsername(userInfo.first_name);
 				setUserId(userInfo.id);
 				console.log(userInfo);
-				axios.post('/user/create_user', {
+				// axios.post('user/create_user', {
+				axios.post('https://192.168.0.106:3000/user/create_user', {
 
 					userInfo
 
