@@ -17,7 +17,7 @@ const Styled = styled.div`
 `
 
 
-const Slider = ({ id, go, userId, bridge }) => {
+const Slider = ({ id, go, userId, bridge, username }) => {
 
     if (userId !== undefined && userId !== null) {
         console.log(userId);
@@ -94,7 +94,7 @@ const Slider = ({ id, go, userId, bridge }) => {
                                 <img src={SlideImage1} className='img-fluid' />
                             </div>
                             <div className='slider__title'>
-                                <span>Карманный менеджер</span>
+                                <span>Добро пожаловать, {username}!</span>
                             </div>
                             <div className='slider__inner'>
                                 <span>

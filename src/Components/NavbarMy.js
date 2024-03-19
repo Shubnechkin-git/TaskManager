@@ -49,8 +49,9 @@ const NavbarMy = (props) => {
         <>
             <NavbarStyle>
                 <Panel id={props.id}>
-                    <Epic>
-                        <Row className='nav'>
+                    <Epic id='1'
+                        tabbar={
+
                             <Tabbar>
                                 <TabbarItem onClick={props.go} data-to="calendar">
                                     <Col className="d-flex justify-content-start nav__btn1 align-items-center">
@@ -80,7 +81,7 @@ const NavbarMy = (props) => {
                                     </Col>
                                 </TabbarItem>
                             </Tabbar>
-                        </Row>
+                        }>
                     </Epic>
                 </Panel >
             </NavbarStyle >

@@ -21,7 +21,7 @@
         "@vkontakte/vk-miniapps-deploy": "^0.0.25",
         "@vkontakte/vk-tunnel": "^0.1.4",
         "@vkontakte/vkui": "5.1.0",
-        "axios": "^1.5.0",
+        "axios": "^1.6.8",
         "babel-eslint": "^10.1.0",
         "bootstrap": "^5.3.2",
         "caniuse-lite": "^1.0.30001514",
@@ -65,5 +65,5 @@
             "last 1 safari version"
         ]
     },
-    "proxy": "http://localhost:5000"
+    "proxy": "http://localhost:3000"
 }

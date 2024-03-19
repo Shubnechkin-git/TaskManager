@@ -13,7 +13,21 @@ import Calendar from './panels/Calendar/Calendar';
 import Settings from './panels/Setting/Settings';
 import bridge from '@vkontakte/vk-bridge';
 
+import axios from 'axios';
+
 const App = () => {
+	// // axios.get('/database/user/id/1')
+	// axios.get('/database/user', {
+	// 	params: {
+	// 		id: 1
+	// 	}
+	// })
+	// 	.then(function (response) {
+	// 		console.log(response);
+	// 	})
+	// 	.catch(function (error) {
+	// 		console.log(error);
+	// 	});
 	const [activePanel, setActivePanel] = useState(null);
 	const [fetchedUser, setUser] = useState(null);
 	const [popout, setPopout] = useState(null);
@@ -22,7 +36,7 @@ const App = () => {
 
 	const callBackendAPI = async () => {
 		try {
-			const response = await fetch('http://localhost:3000/database');
+			const response = await fetch('/');
 
 			if (!response.ok) {
 				throw new Error('Ошибка запроса');
@@ -50,14 +64,25 @@ const App = () => {
 
 	// Vk bridge start
 	const [userId, setUserId] = useState(null);
-
+	const [username, setUsername] = useState('username');
 	useEffect(() => {
 		// Функция для получения ID пользователя через VK Bridge
 		const fetchUserId = async () => {
 			try {
 				const userInfo = await VKBridge.send('VKWebAppGetUserInfo');
+				setUsername(userInfo.first_name);
 				setUserId(userInfo.id);
+				console.log(userInfo);
+				axios.post('/user/create_user', {
 
+					userInfo
+
+				}).then((response) => {
+					console.log(response);
+				})
+					.catch((err) => {
+						console.log(err);
+					});
 			}
 			catch (error) {
 				console.error('Ошибка при получении информации о пользователе:', error);
@@ -90,7 +115,7 @@ const App = () => {
 	// Vk bridge end
 	useEffect(() => {
 		const onlineHandler = () => {
-			if (JSON.parse(localStorage.getItem('sliderIsViewed')) === true)
+			if (JSON.parse(localStorage.getItem('sliderIsViewed')) === true && userId != null)
 				setActivePanel('home'); // Установка активной панели по умолчанию при восстановлении соединения
 			else
 				setActivePanel('slider'); // Установка активной панели по умолчанию при восстановлении соединения
@@ -117,8 +142,8 @@ const App = () => {
 						<SplitCol>
 							{activePanel !== null ? (
 								<View activePanel={activePanel}>
-									<Slider id='slider' go={go} userId={userId} bridge={bridge} />
-									<Home id='home' panel={activePanel} go={go} />
+									<Slider id='slider' username={username} go={go} userId={userId} bridge={bridge} />
+									<Home id='home' username={username} panel={activePanel} go={go} />
 									<Quest panel={activePanel} id='quest' go={go} />
 									<CreateQuest panel={activePanel} id='CreateQuest' go={go} />
 									<Notification panel={activePanel} id='Notification' go={go} />

@@ -1,5 +1,8 @@
-import { Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { query } from 'express';
 import * as mysql from 'mysql2/promise';
+import { VkUserData } from '../interface/vkUserData';
+import { DatabaseService } from './database.service';
 
 // @Request, @Req — req;
 // @Response, @Res — res;
@@ -15,8 +18,7 @@ import * as mysql from 'mysql2/promise';
 @Controller('database')
 export class DatabaseController {
   private pool: mysql.Pool;
-
-  constructor() {
+  constructor(private readonly databaseService: DatabaseService) {
     this.initializeDatabase();
   }
 
@@ -32,23 +34,12 @@ export class DatabaseController {
 
   @Get()
   async getDB(): Promise<string> {
-    const connection = await this.pool.getConnection();
-    const [rows] = await connection.execute('SELECT * FROM users');
-    connection.release();
-
-    return JSON.stringify(rows);
+    return this.databaseService.getDB();
   }
 
-  @Get('user')
-  async getUser1(@Query('id') id: number): Promise<string> {
-    const connection = await this.pool.getConnection();
-    const [rows] = await connection.execute(
-      'SELECT * FROM users WHERE id = ?',
-      [id],
-    );
-    connection.release();
-    // http://localhost:3000/database/user?id=1
-    return JSON.stringify(rows);
+  @Get('user/get_user')
+  async(@Query('id') id: number) {
+    return this.databaseService.getUser1(id);
   }
 
   @Get('user/id/:id')
