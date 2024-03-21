@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Shubnechkin-git/TaskManager#readme",
   "dependencies": {
+    "multer": "^1.4.5-lts.1",
     "ts-node": "^10.9.2"
   }
 }

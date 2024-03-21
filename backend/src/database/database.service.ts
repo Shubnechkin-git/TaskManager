@@ -1,5 +1,7 @@
 import { Injectable, Query } from '@nestjs/common';
 import * as mysql from 'mysql2/promise';
+import * as fs from 'fs';
+
 @Injectable()
 export class DatabaseService {
   constructor() {
@@ -52,5 +54,70 @@ export class DatabaseService {
     `);
     connection.release();
     return result;
+  }
+
+  async getImageTask(id_task) {
+    const connection = await this.pool.getConnection();
+
+    const [result] = await connection
+      .execute(`SELECT image FROM user_tasks WHERE id = ?`, id_task)
+      .then((result) => {
+        return result;
+      })
+      .catch((error) => {
+        return error;
+      });
+
+    connection.release();
+
+    return result;
+  }
+
+  async insertImageTask(image, id_task) {
+    const connection = await this.pool.getConnection();
+
+    console.log(id_task);
+
+    const [result] = await connection.execute(
+      `UPDATE user_tasks SET image = '${image}' WHERE id = ${id_task}`,
+      // 'INSERT INTO user_tasks (title,vk_id, image, description) VALUES (?,?, ?, ?)',
+      // [
+      //   'test',
+      //   vk_id,
+      //   image,
+      //   new Date() +
+      //     ' Cillum et adipisicing qui ea. Fugiat in non non cillum laborum amet aliqua. Nulla ex ea esse tempor in aute nisi enim id ipsum. Incididunt cupidatat commodo pariatur cillum. Non elit cillum eu qui Lorem ullamco ut.',
+      // ],
+    );
+
+    connection.release();
+    return result;
+  }
+
+  async createTask(vk_id, title, description) {
+    const connection = await this.pool.getConnection();
+    const [result] = await connection.execute(
+      'INSERT INTO user_tasks (vk_id, title, description) VALUES (?,?, ?)',
+      [vk_id, title, description],
+    );
+    connection.release();
+    return result;
+  }
+
+  async getTasks(id) {
+    const connection = await this.pool.getConnection();
+    try {
+      const [rows] = await connection.execute(
+        `SELECT id,title, description, image FROM user_tasks WHERE vk_id = ?`,
+        [id], // Поместите vk_id в массив параметров
+      );
+      // console.log('result:', rows);
+      return rows;
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+      return null; // Вернуть null или другое значение по умолчанию в случае ошибки
+    } finally {
+      connection.release();
+    }
   }
 }

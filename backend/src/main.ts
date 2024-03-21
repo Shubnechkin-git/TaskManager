@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cors from 'cors';
+import * as bodyParser from 'body-parser';
 
 async function bootstrap() {
   const fs = require('fs');
@@ -18,11 +19,20 @@ async function bootstrap() {
     },
   });
 
+  app.use(bodyParser.json({ limit: '50mb' }));
+  app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+
   // Разрешить запросы с определенных источников (origin)
   app.use(
     cors({
-      origin: 'https://stage-app51699270-ef8a3ad48afb.pages.vk-apps.com',
-      credentials: true, // если в запросе используются куки или заголовки аутентификации
+      // origin: [
+      //   'https://stage-app51699270-ef8a3ad48afb.pages.vk-apps.com',
+      //   'https://localhost:10888/',
+      //   'https://m.vk.com/app51699270?ref=catalog_recent',
+      // ],
+      origin: '*',
+      credentials: true, // если в запросе используются куки или заголовки аутентификации,
+      allowedHeaders: 'Content-Type,Authorization',
     }),
   );
 

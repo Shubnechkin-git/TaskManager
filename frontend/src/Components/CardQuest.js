@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Row, Col } from 'react-bootstrap'
 import { File } from '@vkontakte/vkui';
 
+import axios from 'axios';
+
 import styled from 'styled-components';
 
 const Styled = styled.div`
@@ -50,7 +52,7 @@ const Styled = styled.div`
 
     .quest_head{
         padding:12px;
-        padding-bottom: 0px;
+        padding-bottom: 12px;
     }
     
     .quest_list .add{
@@ -71,7 +73,7 @@ const Styled = styled.div`
         border:none;
     }
     .quest_foot{
-        padding: 12px;
+        padding: 0px 12px 12px 12px;
     }
     .header_quest{
         padding-bottom: 8px;
@@ -125,13 +127,30 @@ const Styled = styled.div`
     `
 
 
-export default function CardQuest() {
-    const [file, setFile] = useState();
+export default function CardQuest(props) {
+    const [file, setFile] = useState(null);
     const [svgVisible, setSvgVisible] = useState(true);
 
     function handleChange(e) {
-        console.log(e.target.files);
-        setFile(URL.createObjectURL(e.target.files[0]));
+        const file = e.target.files[0];
+
+        const imageBuffer = file;
+        const reader = new FileReader();
+        reader.readAsDataURL(new Blob([imageBuffer], { type: 'image/jpeg' }));
+        reader.onload = () => {
+            console.log('card:', props.vk_id);
+            axios.post('https://192.168.0.106:3000/tasks/upload_image', { data: { file: reader.result, id: props.vk_id, id_task: props.id } })
+                .then(response => {
+                    console.log(response);
+                    setFile(response.data.image);
+                    // setFile(response.data.data[0].image);
+                    props.reload();
+                })
+                .catch(error => {
+                    console.error('Ошибка при загрузке файла:', error);
+                });
+            setSvgVisible(false);
+        };
         setSvgVisible(false);
     }
 
@@ -141,7 +160,7 @@ export default function CardQuest() {
                 <div className='card_quest'>
                     <div className='header_quest d-flex justify-content-between align-items-center'>
                         <div>
-                            <span className='fw-bold'>Задача 12.</span>
+                            <span className='fw-bold'>{props.title}</span>
                         </div>
                         <div className='btn_group d-flex'>
                             <div>
@@ -169,14 +188,19 @@ export default function CardQuest() {
                     </div>
                     <div className='quest'>
                         <div className='quest_head d-flex'>
-                            <div className='img col-1'>
-                                {svgVisible === true ? (
-                                    <File className='image_upload' onChange={handleChange}>
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z" fill="black" />
-                                            <path d="M11.9999 5.40002C12.3182 5.40002 12.6234 5.52645 12.8484 5.7515C13.0735 5.97654 13.1999 6.28176 13.1999 6.60002V10.8H17.3999C17.7182 10.8 18.0234 10.9265 18.2484 11.1515C18.4735 11.3765 18.5999 11.6818 18.5999 12C18.5999 12.3183 18.4735 12.6235 18.2484 12.8486C18.0234 13.0736 17.7182 13.2 17.3999 13.2H13.1999V17.4C13.1999 17.7183 13.0735 18.0235 12.8484 18.2486C12.6234 18.4736 12.3182 18.6 11.9999 18.6C11.6816 18.6 11.3764 18.4736 11.1514 18.2486C10.9263 18.0235 10.7999 17.7183 10.7999 17.4V13.2H6.5999C6.28164 13.2 5.97642 13.0736 5.75137 12.8486C5.52633 12.6235 5.3999 12.3183 5.3999 12C5.3999 11.6818 5.52633 11.3765 5.75137 11.1515C5.97642 10.9265 6.28164 10.8 6.5999 10.8H10.7999V6.60002C10.7999 6.28176 10.9263 5.97654 11.1514 5.7515C11.3764 5.52645 11.6816 5.40002 11.9999 5.40002Z" fill="white" />
-                                        </svg>
-                                    </File>
+                            <div className='img d-flex align-items-center col-1'>
+                                {props.image !== null && (
+                                    < img src={props.image} />
+                                )}
+                                {svgVisible === true && props.image == null ? (
+                                    <div className='d-flex justify-content-center w-100'>
+                                        <File className='image_upload' onChange={handleChange}>
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z" fill="black" />
+                                                <path d="M11.9999 5.40002C12.3182 5.40002 12.6234 5.52645 12.8484 5.7515C13.0735 5.97654 13.1999 6.28176 13.1999 6.60002V10.8H17.3999C17.7182 10.8 18.0234 10.9265 18.2484 11.1515C18.4735 11.3765 18.5999 11.6818 18.5999 12C18.5999 12.3183 18.4735 12.6235 18.2484 12.8486C18.0234 13.0736 17.7182 13.2 17.3999 13.2H13.1999V17.4C13.1999 17.7183 13.0735 18.0235 12.8484 18.2486C12.6234 18.4736 12.3182 18.6 11.9999 18.6C11.6816 18.6 11.3764 18.4736 11.1514 18.2486C10.9263 18.0235 10.7999 17.7183 10.7999 17.4V13.2H6.5999C6.28164 13.2 5.97642 13.0736 5.75137 12.8486C5.52633 12.6235 5.3999 12.3183 5.3999 12C5.3999 11.6818 5.52633 11.3765 5.75137 11.1515C5.97642 10.9265 6.28164 10.8 6.5999 10.8H10.7999V6.60002C10.7999 6.28176 10.9263 5.97654 11.1514 5.7515C11.3764 5.52645 11.6816 5.40002 11.9999 5.40002Z" fill="white" />
+                                            </svg>
+                                        </File>
+                                    </div>
                                 ) : (
                                     <img src={file} className='img-fluid' />
                                 )
@@ -193,12 +217,14 @@ export default function CardQuest() {
                                 </ul>
                             </div>
                         </div>
-                        <div className='quest_foot'>
-                            <div className='quest_description'>
-                                <textarea readOnly value="Lorem ipsum dolor sit amet consectetur. Nunc nunc magna aliquet nulla dis turpis massa. Felis consectetur pulvinar vestibulum adipiscing volutpat dolor vel. Mollis bibendum tortor velit feugiat vulputate massa. Cras amet lorem gravida in. Posuere nibh scelerisque in tristique volutpat. Orci aliquam molestie amet a. Suspendisse tincidunt natoque tristique a. Duis in egestas habitant feugiat imperdiet proin. Pharetra justo mollis lacus ac cras.">
-                                </textarea>
+                        {props.description !== null && (
+                            <div className='quest_foot'>
+                                <div className='quest_description'>
+                                    <textarea readOnly value={props.description}>
+                                    </textarea>
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                     <div className='footer_quest'>
                         <div>
@@ -208,9 +234,9 @@ export default function CardQuest() {
                         </div>
                     </div>
                 </div>
-            </Styled>
+            </Styled >
 
-            <Styled>
+            {/* <Styled>
                 <div className='card_quest mb-3'>
                     <div className='header_quest d-flex justify-content-between align-items-center'>
                         <div>
@@ -328,7 +354,7 @@ export default function CardQuest() {
                         </div>
                     </div>
                 </div>
-            </Styled >
+            </Styled > */}
         </>
     )
 }

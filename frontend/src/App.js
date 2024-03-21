@@ -144,9 +144,9 @@ const App = () => {
 							{activePanel !== null ? (
 								<View activePanel={activePanel}>
 									<Slider id='slider' username={username} go={go} userId={userId} bridge={bridge} />
-									<Home id='home' username={username} panel={activePanel} go={go} />
+									<Home id='home' username={username} vk_id={userId} panel={activePanel} go={go} />
 									<Quest panel={activePanel} id='quest' go={go} />
-									<CreateQuest panel={activePanel} id='CreateQuest' go={go} />
+									<CreateQuest panel={activePanel} vk_id={userId} id='CreateQuest' go={go} />
 									<Notification panel={activePanel} id='Notification' go={go} />
 									<Calendar panel={activePanel} id='calendar' go={go} />
 									<Settings panel={activePanel} id='settings' go={go} />

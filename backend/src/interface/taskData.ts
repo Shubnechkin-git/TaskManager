@@ -1,7 +1,7 @@
 export interface taskData {
   vk_id: number;
   title: string;
-  textarea: Text;
+  description: string;
   list: string;
   image: Blob;
   timer: Date;
