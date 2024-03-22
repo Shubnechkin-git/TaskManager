@@ -5,12 +5,17 @@ import * as bodyParser from 'body-parser';
 
 async function bootstrap() {
   const fs = require('fs');
+  // const keyFile = fs.readFileSync(
+  //   'D:\\VS Code Project\\TaskManager\\backend\\cert\\example.com+5-key.pem',
+  // );
+  // const certFile = fs.readFileSync(
+  //   'D:\\VS Code Project\\TaskManager\\backend\\cert\\example.com+5.pem',
+  // );
+
   const keyFile = fs.readFileSync(
-    'D:\\VS Code Project\\TaskManager\\backend\\cert\\example.com+5-key.pem',
+    __dirname + '\\..\\cert\\example.com+5-key.pem',
   );
-  const certFile = fs.readFileSync(
-    'D:\\VS Code Project\\TaskManager\\backend\\cert\\example.com+5.pem',
-  );
+  const certFile = fs.readFileSync(__dirname + '\\..\\cert\\example.com+5.pem');
 
   const app = await NestFactory.create(AppModule, {
     httpsOptions: {
