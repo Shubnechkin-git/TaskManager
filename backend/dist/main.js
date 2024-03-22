@@ -6,8 +6,8 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 async function bootstrap() {
     const fs = require('fs');
-    const keyFile = fs.readFileSync(__dirname + '\\..\\cert\\example.com+5-key.pem');
-    const certFile = fs.readFileSync(__dirname + '\\..\\cert\\example.com+5.pem');
+    const keyFile = fs.readFileSync(__dirname + '/../cert/example.com+5-key.pem');
+    const certFile = fs.readFileSync(__dirname + '/../cert/example.com+5.pem');
     const app = await core_1.NestFactory.create(app_module_1.AppModule, {
         httpsOptions: {
             key: keyFile,
