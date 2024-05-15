@@ -14,14 +14,14 @@ const Styled = styled.div`
 const Quest = (props) => {
 	return (
 		<View activePanel={props.panel}>
-			<Panel id={props.id}>
+			<Panel id={props.id} >
 				<Styled>
 					<HeaderMy displayName="Создание задачи" go={props.go} leftBtn={<BackBtn go={props.go} />} />
 					<Group className='mt-5'>
 						<FormLayout>
 							<FormItem>
 								<Group mode="plain" size="l">
-									<CreateQuest />
+									<CreateQuest openError={props.openError} go={props.go} openSuccess={props.openSuccess} />
 								</Group>
 							</FormItem>
 						</FormLayout>

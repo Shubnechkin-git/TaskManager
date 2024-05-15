@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import VKBridge from '@vkontakte/vk-bridge';
 import '@vkontakte/vkui/dist/vkui.css';
-import { View, AdaptivityProvider, AppRoot, ConfigProvider, SplitLayout, SplitCol, ScreenSpinner } from '@vkontakte/vkui';
+import { View, AdaptivityProvider, AppRoot, ConfigProvider, SplitLayout, SplitCol, ScreenSpinner, Snackbar, ModalRoot, ModalPage, ModalCard, FormItem, Input } from '@vkontakte/vkui';
 
 import Home from './panels/Home';
 import Quest from './panels/Quest';
@@ -14,8 +14,11 @@ import Settings from './panels/Setting/Settings';
 import bridge from '@vkontakte/vk-bridge';
 
 import axios from 'axios';
+import { Icon28CheckCircleOutline, Icon28ErrorCircleOutline, Icon56MoneyTransferOutline } from '@vkontakte/icons';
+
 
 const App = () => {
+	const [snackbar, setSnackbar] = useState(null);
 	// axios.get('/database/user/id/1')
 	// axios.get('/user', {
 	// 	params: {
@@ -58,8 +61,11 @@ const App = () => {
 	// 		.catch(err => console.log(err));
 	// }, [])
 
-	const go = e => {
-		setActivePanel(e.currentTarget.dataset.to);
+	const go = (e, k = 0) => {
+		if (k == 0)
+			setActivePanel(e.currentTarget.dataset.to);
+		else
+			setActivePanel(e);
 	};
 
 	// Vk bridge start
@@ -74,7 +80,7 @@ const App = () => {
 				setUserId(userInfo.id);
 				console.log(userInfo);
 				// axios.post('user/create_user', {
-				axios.post('https://192.168.0.106:3000/user/create_user', {
+				axios.post('https://192.168.0.108:5000/user/create_user', {
 
 					userInfo
 
@@ -89,6 +95,8 @@ const App = () => {
 				console.error('Ошибка при получении информации о пользователе:', error);
 			}
 		};
+
+
 
 		// Проверяем наличие данных в localStorage
 		if (localStorage.getItem('sliderIsViewed')) {
@@ -135,6 +143,32 @@ const App = () => {
 		};
 	}, []);
 
+	const openSuccess = (text) => {
+		if (snackbar) return;
+		setSnackbar(
+			<Snackbar
+				onClose={() => setSnackbar(null)}
+				before={<Icon28CheckCircleOutline fill="var(--vkui--color_icon_positive)" />}
+			>
+				{text}
+			</Snackbar>,
+		);
+	};
+
+	const openError = (text) => {
+		if (snackbar) return;
+		setSnackbar(
+			<Snackbar
+				onClose={() => setSnackbar(null)}
+				before={<Icon28ErrorCircleOutline fill="var(--vkui--color_icon_negative)" />}
+			>
+				{text}
+			</Snackbar>,
+		);
+	};
+
+	const [activeModal, setActiveModal] = useState('null');
+
 	return (
 		<ConfigProvider appearance="dark">
 			<AdaptivityProvider>
@@ -144,19 +178,35 @@ const App = () => {
 							{activePanel !== null ? (
 								<View activePanel={activePanel}>
 									<Slider id='slider' username={username} go={go} userId={userId} bridge={bridge} />
-									<Home id='home' username={username} vk_id={userId} panel={activePanel} go={go} />
-									<Quest panel={activePanel} id='quest' go={go} />
+									<Home id='home' username={username} openError={openError} openSuccess={openSuccess} vk_id={userId} panel={activePanel} go={go} />
+									<Quest openError={openError} openSuccess={openSuccess} panel={activePanel} id='quest' go={go} />
 									<CreateQuest panel={activePanel} vk_id={userId} id='CreateQuest' go={go} />
 									<Notification panel={activePanel} id='Notification' go={go} />
-									<Calendar panel={activePanel} id='calendar' go={go} />
+									<Calendar setActiveModal={setActiveModal} panel={activePanel} id='calendar' go={go} />
 									<Settings panel={activePanel} id='settings' go={go} />
 								</View>
 							) : (
 								<ScreenSpinner state="loading" />
 							)
 							}
+							{snackbar}
 						</SplitCol>
 					</SplitLayout>
+					<ModalRoot activeModal={activeModal}>
+						<ModalCard id="create" header="Создание задачи" onClose={e => setActiveModal(null)}>
+							<FormItem htmlFor="example" top="📝 Название">
+								<Input
+									id="example"
+									type="text"
+									defaultValue="Lorem ipsum dolor sit amet"
+								/>
+								<div className='mt-3 container_input d-flex flex-column'>
+									<button className={1 > 0 ? 'btn__create btn btn-dark' : 'btn__create btn btn-dark disabled'} onClick={null}>Создать задачу</button>
+								</div>
+							</FormItem>
+						</ModalCard>
+						<ModalCard onClose={e => setActiveModal(null)} id="edit">...</ModalCard>
+					</ModalRoot>
 				</AppRoot>
 			</AdaptivityProvider>
 		</ConfigProvider>

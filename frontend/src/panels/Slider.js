@@ -98,7 +98,7 @@ const Slider = ({ id, go, userId, bridge, username }) => {
                             </div>
                             <div className='slider__inner'>
                                 <span>
-                                    Lorem ipsum dolor sit amet consectetur. Elementum vitae id cras eros euismod dis. Viverra proin et sed quisque maecenas dis phasellus semper nisl. In posuere facilisis venenatis enim tempor morbi mauris sed sed. Lobortis adipiscing morbi a in viverra ullamcorper adipiscing et mauris. Risus mattis justo a et lectus.
+                                    Карманный менеджер - это твой надежный помощник для выполнения и отслеживания твоих целей и задач. С его помощью ты сможешь управлять своим временем, контролировать выполнение задач и следить за своими привычками.
                                 </span>
                             </div>
                         </div>
@@ -109,11 +109,11 @@ const Slider = ({ id, go, userId, bridge, username }) => {
                                 <img src={SlideImage1} className='img-fluid' />
                             </div>
                             <div className='slider__title'>
-                                <span>Карманный менеджер</span>
+                                <span>Главный экран</span>
                             </div>
                             <div className='slider__inner'>
                                 <span>
-                                    Lorem ipsum dolor sit amet consectetur. Elementum vitae id cras eros euismod dis. Viverra proin et sed quisque maecenas dis phasellus semper nisl. In posuere facilisis venenatis enim tempor morbi mauris sed sed. Lobortis adipiscing morbi a in viverra ullamcorper adipiscing et mauris. Risus mattis justo a et lectus.
+                                    Главный экран - это центральное место, где ты можешь увидеть все свои задачи и цели. Здесь ты можешь создавать новые задачи, редактировать, завершать и удалять существующие.
                                 </span>
                             </div>
                         </div>
@@ -124,11 +124,11 @@ const Slider = ({ id, go, userId, bridge, username }) => {
                                 <img src={SlideImage1} className='img-fluid' />
                             </div>
                             <div className='slider__title'>
-                                <span>Карманный менеджер</span>
+                                <span>Счетчики</span>
                             </div>
                             <div className='slider__inner'>
                                 <span>
-                                    Lorem ipsum dolor sit amet consectetur. Elementum vitae id cras eros euismod dis. Viverra proin et sed quisque maecenas dis phasellus semper nisl. In posuere facilisis venenatis enim tempor morbi mauris sed sed. Lobortis adipiscing morbi a in viverra ullamcorper adipiscing et mauris. Risus mattis justo a et lectus.
+                                    Счетчики - это полезная функция в приложении, которая позволяет отслеживать количество выполненных действий или событий. Счетчики могут использоваться для различных целей, таких как подсчет количества прочитанных страниц книги или количесвто дней привычки.
                                 </span>
                             </div>
                         </div>
@@ -139,11 +139,12 @@ const Slider = ({ id, go, userId, bridge, username }) => {
                                 <img src={SlideImage1} className='img-fluid' />
                             </div>
                             <div className='slider__title'>
-                                <span>Карманный менеджер</span>
+                                <span>Настройки</span>
                             </div>
                             <div className='slider__inner'>
                                 <span>
-                                    Lorem ipsum dolor sit amet consectetur. Elementum vitae id cras eros euismod dis. Viverra proin et sed quisque maecenas dis phasellus semper nisl. In posuere facilisis venenatis enim tempor morbi mauris sed sed. Lobortis adipiscing morbi a in viverra ullamcorper adipiscing et mauris. Risus mattis justo a et lectus.
+                                    В настройках ты можешь включить или выключить уведомлдения, а так же настроить тему приложения.
+                                    Удачи!
                                 </span>
                             </div>
                         </div>

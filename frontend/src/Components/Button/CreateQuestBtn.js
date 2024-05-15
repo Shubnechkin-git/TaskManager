@@ -1,8 +1,10 @@
-import { React } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Icon20AddAlt } from '@vkontakte/icons';
+import { Icon20AddAlt, Icon28CheckCircleOutline, Icon28ErrorCircleOutline } from '@vkontakte/icons';
+import { Snackbar } from '@vkontakte/vkui';
 
 const CreateQuestBtn = (props) => {
+
     return (
         <>
             <div className='btn__border d-flex justify-content-center align-items-center' onClick={props.go} data-to="quest">

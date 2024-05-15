@@ -1,5 +1,5 @@
 import React from 'react';
-import { Panel, PanelHeader, PanelHeaderClose, PanelHeaderButton, Input, Header, Button, Group, ButtonGroup, FormItem, FormLayout, View, Card, CardGrid } from '@vkontakte/vkui';
+import { Panel, PanelHeader, PanelHeaderClose, PanelHeaderButton, Input, Header, Button, Group, ButtonGroup, FormItem, FormLayout, View, Card, CardGrid, Snackbar } from '@vkontakte/vkui';
 import { Row, Col } from 'react-bootstrap'
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -12,6 +12,7 @@ import BackBtn from '../../Components/Button/BackBtn';
 import ReadyThemes from '../../Components/ReadyThemes';
 import CreateTheme from '../../Components/CreateTheme';
 import ContactDev from '../../Components/ContactDev';
+import { Icon28ErrorCircleOutline } from '@vkontakte/icons';
 
 const Styled = styled.div`
 `

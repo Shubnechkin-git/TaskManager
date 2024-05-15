@@ -8,6 +8,7 @@ import {
   Post,
   Param,
   UseInterceptors,
+  Delete,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
@@ -66,6 +67,7 @@ export class TasksController {
         taskData.vk_id,
         taskData.title,
         taskData.description,
+        taskData.image
       );
       return {
         success: true,
@@ -74,6 +76,85 @@ export class TasksController {
       };
     } catch (err) {
       return { success: false, err: err };
+    }
+  }
+
+  @Delete('delete_task')
+  async deleteTask(@Query() id: number): Promise<any> {
+    try {
+      if (Object.keys(id).length > 0) {
+        const res = await this.databaseService.deleteTask(
+          id['id'],
+          id['vk_id'],
+        );
+        if (res !== null)
+          if (res['affectedRows'] > 0)
+            return {
+              success: true,
+              message: 'Задача удалена!',
+              data: res,
+            };
+          else
+            return {
+              success: false,
+              message: 'Задача не найдена!',
+              data: res,
+            };
+        else {
+          return {
+            success: false,
+            message: 'Задача не найдена!',
+            data: res,
+          };
+        }
+      } else
+        return {
+          success: false,
+          message: 'id должно быть больше 0!',
+          data: null,
+        };
+    } catch (err) {
+      console.log(err);
+
+      return { success: false, err: err, message: 'Повторите позже!' };
+    }
+  }
+
+  @Delete('done_task')
+  async doneTask(@Query() id: number): Promise<any> {
+    try {
+      if (Object.keys(id).length > 0) {
+        const res = await this.databaseService.doneTask(id['id'], id['vk_id']);
+        if (res !== null)
+          if (res['affectedRows'] > 0)
+            return {
+              success: true,
+              message: 'Задача успешно выполнена, поздравляем!',
+              data: res,
+            };
+          else
+            return {
+              success: false,
+              message: 'Задача не найдена!',
+              data: res,
+            };
+        else {
+          return {
+            success: false,
+            message: 'Задача не найдена!',
+            data: res,
+          };
+        }
+      } else
+        return {
+          success: false,
+          message: 'id должно быть больше 0!',
+          data: null,
+        };
+    } catch (err) {
+      console.log(err);
+
+      return { success: false, err: err, message: 'Повторите позже!' };
     }
   }
 

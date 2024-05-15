@@ -38,7 +38,7 @@ export default function Home(props) {
 	const getTasksUser = () => {
 		let user = fetchUserId().then(res => {
 			if (vk_id > 0) {
-				axios.get('https://192.168.0.106:3000/tasks/get', {
+				axios.get('https://192.168.0.108:5000/tasks/get', {
 					params: {
 						id: vk_id
 					}
@@ -66,13 +66,15 @@ export default function Home(props) {
 			<Panel id={props.id}>
 				<Group className='mt-5 '>
 					<Styled>
-						<HeaderMy displayName="Главный экран" go={props.go} leftBtn={<CreateQuestBtn go={props.go} />} />
+						<HeaderMy displayName="Главный экран"  go={props.go} leftBtn={<CreateQuestBtn go={props.go} />} />
 						<SplitLayout>
 							<SplitCol>
 								<Group mode="plain" size="l">
 									{userTasks.length > 0 ? (
 										userTasks.map(task => (
 											<CardQuest
+												getTasksUser={getTasksUser}
+												openError={props.openError} openSuccess={props.openSuccess}
 												key={task.id} // Предполагается, что каждая задача имеет уникальный идентификатор
 												vk_id={props.vk_id}
 												id={task.id}

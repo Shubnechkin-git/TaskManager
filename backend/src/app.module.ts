@@ -7,9 +7,10 @@ import { TasksController } from './tasks/tasks.controller';
 import { TasksModule } from './tasks/tasks.module';
 import { DatabaseService } from './database/database.service';
 import { UserController } from './user/user.controller';
+import { CountersController } from './counters/counters.controller';
 
 @Module({
-  controllers: [AppController, DatabaseController, TasksController, UserController],
+  controllers: [AppController, DatabaseController, TasksController, UserController, CountersController],
   providers: [AppService, DatabaseService],
   imports: [DatabaseModule, TasksModule],
 })

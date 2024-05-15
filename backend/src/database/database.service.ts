@@ -94,11 +94,11 @@ export class DatabaseService {
     return result;
   }
 
-  async createTask(vk_id, title, description) {
+  async createTask(vk_id, title, description, image) {
     const connection = await this.pool.getConnection();
     const [result] = await connection.execute(
-      'INSERT INTO user_tasks (vk_id, title, description) VALUES (?,?, ?)',
-      [vk_id, title, description],
+      'INSERT INTO user_tasks (vk_id, title, description, image) VALUES (?,?, ?, ?)',
+      [vk_id, title, description, image],
     );
     connection.release();
     return result;
@@ -108,7 +108,7 @@ export class DatabaseService {
     const connection = await this.pool.getConnection();
     try {
       const [rows] = await connection.execute(
-        `SELECT id,title, description, image FROM user_tasks WHERE vk_id = ?`,
+        `SELECT id,title, description, image FROM user_tasks WHERE vk_id = ? AND status LIKE 'waiting' ORDER BY created_at DESC`,
         [id], // Поместите vk_id в массив параметров
       );
       // console.log('result:', rows);
@@ -116,6 +116,38 @@ export class DatabaseService {
     } catch (error) {
       console.error('Error fetching tasks:', error);
       return null; // Вернуть null или другое значение по умолчанию в случае ошибки
+    } finally {
+      connection.release();
+    }
+  }
+
+  async deleteTask(id, vk_id) {
+    const connection = await this.pool.getConnection();
+    try {
+      const [rows] = await connection.execute(
+        `UPDATE user_tasks SET status = 'deleted' WHERE id=${id} AND vk_id=${vk_id}`,
+      );
+      // console.log('result:', rows);
+      return rows;
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+      return 'Повторите позже!'; // Вернуть null или другое значение по умолчанию в случае ошибки
+    } finally {
+      connection.release();
+    }
+  }
+
+  async doneTask(id, vk_id) {
+    const connection = await this.pool.getConnection();
+    try {
+      const [rows] = await connection.execute(
+        `UPDATE user_tasks SET status = 'done' WHERE id=${id} AND vk_id=${vk_id}`,
+      );
+      // console.log('result:', rows);
+      return rows;
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+      return 'Повторите позже!'; // Вернуть null или другое значение по умолчанию в случае ошибки
     } finally {
       connection.release();
     }
