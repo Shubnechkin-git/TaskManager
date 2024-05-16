@@ -16,12 +16,13 @@ const tasks_controller_1 = require("./tasks/tasks.controller");
 const tasks_module_1 = require("./tasks/tasks.module");
 const database_service_1 = require("./database/database.service");
 const user_controller_1 = require("./user/user.controller");
+const counters_controller_1 = require("./counters/counters.controller");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        controllers: [app_controller_1.AppController, database_controller_1.DatabaseController, tasks_controller_1.TasksController, user_controller_1.UserController],
+        controllers: [app_controller_1.AppController, database_controller_1.DatabaseController, tasks_controller_1.TasksController, user_controller_1.UserController, counters_controller_1.CountersController],
         providers: [app_service_1.AppService, database_service_1.DatabaseService],
         imports: [database_module_1.DatabaseModule, tasks_module_1.TasksModule],
     })

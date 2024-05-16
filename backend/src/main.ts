@@ -41,8 +41,8 @@ async function bootstrap() {
     }),
   );
 
-  console.log('https://localhost:3000/');
-
-  await app.listen(5000);
+  
+  await app.listen(3000);
+  console.log('https://localhost:3000',);
 }
 bootstrap();

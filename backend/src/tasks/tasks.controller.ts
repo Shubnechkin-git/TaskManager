@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   Delete,
 } from '@nestjs/common';
+
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { Multer } from 'multer';
@@ -67,15 +68,16 @@ export class TasksController {
         taskData.vk_id,
         taskData.title,
         taskData.description,
-        taskData.image
+        taskData.image,
       );
+
       return {
         success: true,
         message: 'Задача создана!',
         data: createTask,
       };
     } catch (err) {
-      return { success: false, err: err };
+      return { success: false, err: err, message: err.code };
     }
   }
 
@@ -115,7 +117,7 @@ export class TasksController {
         };
     } catch (err) {
       console.log(err);
- 
+
       return { success: false, err: err, message: 'Повторите позже!' };
     }
   }

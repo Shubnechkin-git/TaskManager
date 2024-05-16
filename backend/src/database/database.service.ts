@@ -100,6 +100,24 @@ export class DatabaseService {
       'INSERT INTO user_tasks (vk_id, title, description, image) VALUES (?,?, ?, ?)',
       [vk_id, title, description, image],
     );
+    result['task_count'] = await connection.execute(
+      `SELECT COUNT(vk_id) as 'count' FROM user_tasks WHERE vk_id = ${vk_id} GROUP BY vk_id`,
+    );
+
+    connection.release();
+    return result;
+  }
+
+  async createCounter(vk_id, title) {
+    const connection = await this.pool.getConnection();
+    const [result] = await connection.execute(
+      'INSERT INTO user_counters (vk_id, title) VALUES (?,?)',
+      [vk_id, title],
+    );
+    result['task_count'] = await connection.execute(
+      `SELECT COUNT(vk_id) as 'count' FROM user_counters WHERE vk_id = ${vk_id} GROUP BY vk_id`,
+    );
+
     connection.release();
     return result;
   }
@@ -116,6 +134,38 @@ export class DatabaseService {
     } catch (error) {
       console.error('Error fetching tasks:', error);
       return null; // Вернуть null или другое значение по умолчанию в случае ошибки
+    } finally {
+      connection.release();
+    }
+  }
+
+  async getCounters(id) {
+    const connection = await this.pool.getConnection();
+    try {
+      const [rows] = await connection.execute(
+        `SELECT id,title, count FROM user_counters WHERE vk_id = ? AND status LIKE 'waiting' ORDER BY created_at DESC`,
+        [id], // Поместите vk_id в массив параметров
+      );
+      // console.log('result:', rows);
+      return rows;
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+      return null; // Вернуть null или другое значение по умолчанию в случае ошибки
+    } finally {
+      connection.release();
+    }
+  }
+
+  async updateCount(id, vk_id, count) {
+    const connection = await this.pool.getConnection();
+    try {
+      const [rows] = await connection.execute(
+        `UPDATE user_counters SET count = ${count} WHERE id=${id} AND vk_id=${vk_id}`,
+      );
+      return rows;
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+      return 'Повторите позже!'; // Вернуть null или другое значение по умолчанию в случае ошибки
     } finally {
       connection.release();
     }

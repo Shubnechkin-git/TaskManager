@@ -7,5 +7,7 @@ export declare class TasksController {
     test(id: number): Promise<string>;
     uploadImage(file: any): Promise<any>;
     createTask(taskData: taskData): Promise<any>;
+    deleteTask(id: number): Promise<any>;
+    doneTask(id: number): Promise<any>;
     getTask(id: VkUserData): Promise<any>;
 }

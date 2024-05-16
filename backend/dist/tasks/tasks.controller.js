@@ -42,7 +42,7 @@ let TasksController = class TasksController {
     }
     async createTask(taskData) {
         try {
-            const createTask = await this.databaseService.createTask(taskData.vk_id, taskData.title, taskData.description);
+            const createTask = await this.databaseService.createTask(taskData.vk_id, taskData.title, taskData.description, taskData.image);
             return {
                 success: true,
                 message: 'Задача создана!',
@@ -50,7 +50,81 @@ let TasksController = class TasksController {
             };
         }
         catch (err) {
-            return { success: false, err: err };
+            return { success: false, err: err, message: err.code };
+        }
+    }
+    async deleteTask(id) {
+        try {
+            if (Object.keys(id).length > 0) {
+                const res = await this.databaseService.deleteTask(id['id'], id['vk_id']);
+                if (res !== null)
+                    if (res['affectedRows'] > 0)
+                        return {
+                            success: true,
+                            message: 'Задача удалена!',
+                            data: res,
+                        };
+                    else
+                        return {
+                            success: false,
+                            message: 'Задача не найдена!',
+                            data: res,
+                        };
+                else {
+                    return {
+                        success: false,
+                        message: 'Задача не найдена!',
+                        data: res,
+                    };
+                }
+            }
+            else
+                return {
+                    success: false,
+                    message: 'Повторите позже!',
+                    data: null,
+                };
+        }
+        catch (err) {
+            console.log(err);
+            return { success: false, err: err, message: 'Повторите позже!' };
+        }
+    }
+    async doneTask(id) {
+        try {
+            if (Object.keys(id).length > 0) {
+                const res = await this.databaseService.doneTask(id['id'], id['vk_id']);
+                if (res !== null)
+                    if (res['affectedRows'] > 0)
+                        return {
+                            success: true,
+                            message: 'Задача успешно выполнена, поздравляем!',
+                            data: res,
+                        };
+                    else
+                        return {
+                            success: false,
+                            message: 'Задача не найдена!',
+                            data: res,
+                        };
+                else {
+                    return {
+                        success: false,
+                        message: 'Задача не найдена!',
+                        data: res,
+                    };
+                }
+            }
+            else
+                return {
+                    success: false,
+                    message: 'id должно быть больше 0!',
+                    data: null,
+                };
+        }
+        catch (err) {
+            console.log(err);
+            return { success: false, err: err, message: 'Повторите позже!' };
         }
     }
     async getTask(id) {
@@ -80,6 +154,20 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], TasksController.prototype, "createTask", null);
+__decorate([
+    (0, common_1.Delete)('delete_task'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], TasksController.prototype, "deleteTask", null);
+__decorate([
+    (0, common_1.Delete)('done_task'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], TasksController.prototype, "doneTask", null);
 __decorate([
     (0, common_1.Get)('get'),
     __param(0, (0, common_1.Query)()),

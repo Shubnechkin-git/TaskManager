@@ -21,8 +21,8 @@ async function bootstrap() {
         credentials: true,
         allowedHeaders: 'Content-Type,Authorization',
     }));
-    console.log('https://localhost:3000/');
-    await app.listen(3000);
+    await app.listen(5000);
+    console.log('https://localhost:');
 }
 bootstrap();
 //# sourceMappingURL=main.js.map
