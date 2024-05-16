@@ -139,7 +139,7 @@ export default function CardQuest(props) {
         reader.readAsDataURL(new Blob([imageBuffer], { type: 'image/jpeg' }));
         reader.onload = () => {
             console.log('card:', props.vk_id);
-            axios.post('https://192.168.0.108:5000/tasks/upload_image', { data: { file: reader.result, id: props.vk_id, id_task: props.id } })
+            axios.post('https://taskmanagerbackend.cleverapps.io/tasks/upload_image', { data: { file: reader.result, id: props.vk_id, id_task: props.id } })
                 .then(response => {
                     console.log(response);
                     setFile(response.data.image);
@@ -155,7 +155,7 @@ export default function CardQuest(props) {
     }
 
     const handleDelete = () => {
-        axios.delete('https://192.168.0.108:5000/tasks/delete_task', { params: { id: props.id, vk_id: props.vk_id } }).then(response => {
+        axios.delete('https://taskmanagerbackend.cleverapps.io/tasks/delete_task', { params: { id: props.id, vk_id: props.vk_id } }).then(response => {
             if (response.data.success) {
                 props.getTasksUser();
                 props.openSuccess(response.data.message);
@@ -169,7 +169,7 @@ export default function CardQuest(props) {
     }
 
     const handleDone = () => {
-        axios.delete('https://192.168.0.108:5000/tasks/done_task', { params: { id: props.id, vk_id: props.vk_id } }).then(response => {
+        axios.delete('https://taskmanagerbackend.cleverapps.io/tasks/done_task', { params: { id: props.id, vk_id: props.vk_id } }).then(response => {
             if (response.data.success) {
                 props.getTasksUser();
                 props.openSuccess(response.data.message);
@@ -209,11 +209,11 @@ export default function CardQuest(props) {
                     </div>
                     {props.description == null && props.image == null ? null :
                         <div className='quest'>
-                            <div className='quest_head d-flex'>
+                            <div className='quest_head w-100  d-flex'>
                                 {props.description !== null ? (
                                     <div className='img d-flex align-items-center col-1'>
                                         {props.image !== null && (
-                                            < img src={props.image} />
+                                            <img src={props.image} alt='photo' />
                                         )}
                                         {svgVisible === true && props.image == null ? (
                                             <div className='d-flex justify-content-center w-100'>
@@ -230,7 +230,9 @@ export default function CardQuest(props) {
                                         }
                                     </div>
                                 ) : (
-                                    null
+                                    props.image !== null && (
+                                        <img src={props.image} className="img-fluid w-100" style={{ borderRadius: 10 }} alt='photo' />
+                                    )
                                 )}
                                 {props.description !== null && (
                                     <div className='quest_foot w-100 p-0'>

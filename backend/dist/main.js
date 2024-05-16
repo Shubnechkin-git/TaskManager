@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@nestjs/core");
 const app_module_1 = require("./app.module");
-const cors = require("cors");
 const bodyParser = require("body-parser");
 async function bootstrap() {
     const fs = require('fs');
@@ -16,12 +15,7 @@ async function bootstrap() {
     });
     app.use(bodyParser.json({ limit: '50mb' }));
     app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
-    app.use(cors({
-        origin: '*',
-        credentials: true,
-        allowedHeaders: 'Content-Type,Authorization',
-    }));
-    await app.listen(3000);
+    await app.listen(5000);
     const address = app.getHttpServer().address();
     const port = address.port;
     const hostname = address.address || 'localhost';

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Panel, PanelHeader, PanelHeaderButton, Input, Header, Button, Group, ButtonGroup, FormItem, FormLayout, Card, CardGrid, View, ModalRoot, ModalPage, ModalCard } from '@vkontakte/vkui';
 import { Row, Col } from 'react-bootstrap'
 import PropTypes from 'prop-types';
@@ -36,6 +36,16 @@ const Styled = styled.div`
 `
 
 const Calendar = (props) => {
+
+    const [isLoadedData, setLoadedData] = useState(false);
+
+    useEffect(() => {
+        if (!isLoadedData) {
+            props.fetchCounters();
+            setLoadedData(true);
+        }
+    }, [props.userCounters]);
+
     return (
         <>
             <HeaderMy displayName="Счетчики" go={props.go} leftBtn={<div className='btn__border d-flex justify-content-center align-items-center' onClick={e => props.setActiveModal('create')}>
@@ -47,17 +57,19 @@ const Calendar = (props) => {
                 <Panel id={props.id}>
                     <Group className='mt-5'>
                         <Styled>
-                            <Counter />
-                            <Counter />
-                            <Counter />
-                            <Counter />
-                            <Counter />
-                            <Counter />
-                            <Counter />
+                            {props.userCounters.length > 0 ? (
+                                props.userCounters.map(task => (<>
+                                    <Counter setTitleEdit={props.setTitleEdit} setActiveModal={props.setActiveModal} openError={props.openError} id={task.id} vk_id={props.vk_id} title={task.title} fetchCounters={props.fetchCounters} userCounters={props.userCounters} count={task.count} />
+                                </>
+                                ))
+                            ) : (
+                                null
+                            )}
+
                         </Styled>
                     </Group>
                 </Panel>
-            </View>
+            </View >
             <NavbarMy go={props.go} titleBtn='calendar' />
         </>)
 }

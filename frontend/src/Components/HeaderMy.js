@@ -52,7 +52,7 @@ const HeaderMy = (props) => {
         <>
             <Panel id={props.id}>
                 <HeaderStyle>
-                    <div className='header'>
+                    <div className='header' id="header">
                         <Row className='header_row'>
                             <Col col="4" className='header__col col__1 d-flex justify-content-start align-items-center'>
                                 {props.leftBtn}

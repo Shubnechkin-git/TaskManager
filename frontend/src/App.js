@@ -80,7 +80,7 @@ const App = () => {
 				setUserId(userInfo.id);
 				console.log(userInfo);
 				// axios.post('user/create_user', {
-				axios.post('https://192.168.0.108:5000/user/create_user', {
+				axios.post('https://taskmanagerbackend.cleverapps.io/user/create_user', {
 
 					userInfo
 
@@ -169,6 +169,88 @@ const App = () => {
 
 	const [activeModal, setActiveModal] = useState('null');
 
+	const [title, setTitle] = useState(null);
+	const [counter, setCounter] = useState([0, 0]);
+
+	const handleChangeTitle = (e) => {
+		let value = e.target.value.trim();
+		if (value !== '') {
+			let truncatedValue = value.slice(0, 50);
+			setCounter([truncatedValue.length, counter[1]]);
+			setTitle(truncatedValue);
+		} else {
+			setTitle(null);
+			setCounter([0, counter[1]]);
+		}
+	}
+
+	const handleCreate = () => {
+		if (title !== null) {
+			axios.post('https://taskmanagerbackend.cleverapps.io/counters/create_counter', { title, vk_id: userId }).then((response) => {
+				console.log(response);
+				if (response.data.success) {
+					fetchCounters();
+					setActiveModal(null);
+					setTitle(null);
+					setCounter([0, 0]);
+					VKBridge.send('VKWebAppCheckNativeAds', {
+						ad_format: 'interstitial ' /* Тип рекламы */
+					})
+						.then((data) => {
+							if (data.result) {
+								// Предзагруженные материалы есть
+								VKBridge.send('VKWebAppShowNativeAds', {
+									ad_format: 'interstitial' /* Тип рекламы */
+								})
+									.then((data) => {
+										if (data.result) {
+											// Реклама была показана
+											console.log(data.result);
+										} else {
+											// Ошибка
+										}
+									})
+									.catch((error) => { console.log(error); });
+							} else {
+								// Материалов нет 
+								console.log('Материалов нет!');
+							}
+						})
+						.catch((error) => { console.log(error); });
+					openSuccess(response.data.message);
+				}
+				else
+					openError(response.data.message);
+			}).catch((error) => {
+				console.log(error);
+				openError(error.response.data.message);
+			});
+		}
+	}
+
+	const [userCounters, setUserCounters] = useState([]);
+	const [isData, setIsData] = useState(false);
+
+	const fetchCounters = () => {
+		setUserCounters([]);
+		if (userId > 0) {
+			axios.get('https://taskmanagerbackend.cleverapps.io/counters/get', {
+				params: {
+					id: userId
+				}
+			}).then((response) => {
+				setIsData(true)
+				setUserCounters(response.data);
+				console.log(response);
+			}).catch((error) => {
+				setIsData(false)
+				console.error(error);
+			});
+		}
+	}
+
+	const [titleEdit, setTitleEdit] = useState(null);
+
 	return (
 		<ConfigProvider appearance="dark">
 			<AdaptivityProvider>
@@ -182,7 +264,7 @@ const App = () => {
 									<Quest openError={openError} openSuccess={openSuccess} panel={activePanel} id='quest' go={go} />
 									<CreateQuest panel={activePanel} vk_id={userId} id='CreateQuest' go={go} />
 									<Notification panel={activePanel} id='Notification' go={go} />
-									<Calendar setActiveModal={setActiveModal} panel={activePanel} id='calendar' go={go} />
+									<Calendar setIsData={isData} setTitleEdit={setTitleEdit} openError={openError} fetchCounters={fetchCounters} vk_id={userId} userCounters={userCounters} setActiveModal={setActiveModal} panel={activePanel} id='calendar' go={go} />
 									<Settings panel={activePanel} id='settings' go={go} />
 								</View>
 							) : (
@@ -193,19 +275,34 @@ const App = () => {
 						</SplitCol>
 					</SplitLayout>
 					<ModalRoot activeModal={activeModal}>
-						<ModalCard id="create" header="Создание задачи" onClose={e => setActiveModal(null)}>
+						<ModalCard id="create" header="Создание счетчика" onClose={e => setActiveModal(null)}>
 							<FormItem htmlFor="example" top="📝 Название">
 								<Input
 									id="example"
 									type="text"
-									defaultValue="Lorem ipsum dolor sit amet"
+									onChange={e => handleChangeTitle(e)}
+									placeholder="Lorem ipsum dolor sit amet"
 								/>
+								{counter[0]}/50
 								<div className='mt-3 container_input d-flex flex-column'>
-									<button className={1 > 0 ? 'btn__create btn btn-dark' : 'btn__create btn btn-dark disabled'} onClick={null}>Создать задачу</button>
+									<button onClick={handleCreate} className={counter[0] > 0 ? 'btn__create btn btn-dark' : 'btn__create btn btn-dark disabled'}>Создать задачу</button>
 								</div>
 							</FormItem>
 						</ModalCard>
-						<ModalCard onClose={e => setActiveModal(null)} id="edit">...</ModalCard>
+						<ModalCard header="Редактирование счетчика" onClose={e => setActiveModal(null)} id="edit">
+							<FormItem htmlFor="example" top="📝 Название">
+								<Input
+									id="example"
+									type="text"
+									value={titleEdit}
+									onChange={e => handleChangeTitle(e)}
+									placeholder="Lorem ipsum dolor sit amet"
+								/>
+								{counter[0]}/50
+								<div className='mt-3 container_input d-flex flex-column'>
+									<button onClick={handleCreate} className={counter[0] > 0 ? 'btn__create btn btn-dark' : 'btn__create btn btn-dark disabled'}>Создать задачу</button>
+								</div>
+							</FormItem></ModalCard>
 					</ModalRoot>
 				</AppRoot>
 			</AdaptivityProvider>

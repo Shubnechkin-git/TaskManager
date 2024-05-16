@@ -27,6 +27,21 @@ export default function Home(props) {
 	const fetchUserId = async () => {
 		try {
 			const userInfo = await VKBridge.send('VKWebAppGetUserInfo');
+			{
+				VKBridge.send('VKWebAppShowBannerAd', {
+					banner_location: 'bottom'
+				})
+					.then((data) => {
+						if (data.result) {
+							// Баннерная реклама отобразилась
+							console.log(data.result);
+						}
+					})
+					.catch((error) => {
+						// Ошибка
+						console.log(error);
+					})
+			}
 			vk_id = userInfo.id;
 			return vk_id;
 		}
@@ -38,7 +53,7 @@ export default function Home(props) {
 	const getTasksUser = () => {
 		let user = fetchUserId().then(res => {
 			if (vk_id > 0) {
-				axios.get('https://192.168.0.108:5000/tasks/get', {
+				axios.get('https://taskmanagerbackend.cleverapps.io/tasks/get', {
 					params: {
 						id: vk_id
 					}
@@ -66,7 +81,7 @@ export default function Home(props) {
 			<Panel id={props.id}>
 				<Group className='mt-5 '>
 					<Styled>
-						<HeaderMy displayName="Главный экран"  go={props.go} leftBtn={<CreateQuestBtn go={props.go} />} />
+						<HeaderMy displayName="Главный экран" go={props.go} leftBtn={<CreateQuestBtn go={props.go} />} />
 						<SplitLayout>
 							<SplitCol>
 								<Group mode="plain" size="l">
