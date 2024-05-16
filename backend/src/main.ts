@@ -12,9 +12,7 @@ async function bootstrap() {
   //   'D:\\VS Code Project\\TaskManager\\backend\\cert\\example.com+5.pem',
   // );
 
-  const keyFile = fs.readFileSync(
-    __dirname + '/../cert/example.com+5-key.pem',
-  );
+  const keyFile = fs.readFileSync(__dirname + '/../cert/example.com+5-key.pem');
   const certFile = fs.readFileSync(__dirname + '/../cert/example.com+5.pem');
 
   const app = await NestFactory.create(AppModule, {
@@ -41,8 +39,11 @@ async function bootstrap() {
     }),
   );
 
-  
-  await app.listen(3000);
-  console.log('https://localhost:3000',);
+  await app.listen(5000);
+  const address = app.getHttpServer().address();
+  const port = address.port;
+  const hostname = address.address || 'localhost';
+
+  console.log(`Server is running on http://${hostname}:${port}`);
 }
 bootstrap();

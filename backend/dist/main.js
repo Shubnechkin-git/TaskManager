@@ -22,7 +22,10 @@ async function bootstrap() {
         allowedHeaders: 'Content-Type,Authorization',
     }));
     await app.listen(5000);
-    console.log('https://localhost:');
+    const address = app.getHttpServer().address();
+    const port = address.port;
+    const hostname = address.address || 'localhost';
+    console.log(`Server is running on http://${hostname}:${port}`);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map
