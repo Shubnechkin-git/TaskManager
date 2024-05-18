@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Panel, View, Snackbar, Input, Header, Button, Group, ButtonGroup, FormItem, SplitCol, Card, CardGrid, SplitLayout } from '@vkontakte/vkui';
+import { Panel, View, Snackbar, Input, Header, Button, Group, ButtonGroup, FormItem, SplitCol, Card, CardGrid, SplitLayout, CellButton } from '@vkontakte/vkui';
 import { Icon16DeleteOutline, Icon16PenOutline, Icon24AddOutline, Icon16ArticleBoxOutline, Icon16Add, Icon16Minus } from '@vkontakte/icons';
 
 import HeaderMy from '../Components/HeaderMy'
@@ -19,98 +19,62 @@ const Styled = styled.div`
 export default function Home(props) {
 	localStorage.setItem('sliderIsViewed', JSON.stringify(true));
 
-	const [userTasks, setUserTasks] = useState([]);
-	const [isLoadedData, setIsLoadedData] = useState(false);
+	const [isLoadedData, setLoadedData] = useState(false);
+	const [taskLen, setTaskLen] = useState(props.userTasks.length);
 
-	let vk_id = null;
-
-	const fetchUserId = async () => {
-		try {
-			const userInfo = await VKBridge.send('VKWebAppGetUserInfo');
-			{
-				VKBridge.send('VKWebAppShowBannerAd', {
-					banner_location: 'bottom'
-				})
-					.then((data) => {
-						if (data.result) {
-							// Баннерная реклама отобразилась
-							console.log(data.result);
-						}
-					})
-					.catch((error) => {
-						// Ошибка
-						console.log(error);
-					})
-			}
-			vk_id = userInfo.id;
-			return vk_id;
-		}
-		catch (err) {
-			console.error(err);
-		}
-	}
-
-	const getTasksUser = () => {
-		let user = fetchUserId().then(res => {
-			if (vk_id > 0) {
-				axios.get('https://taskmanagerbackend.cleverapps.io/tasks/get', {
-					params: {
-						id: vk_id
-					}
-				}).then((response) => {
-					setIsLoadedData(true);
-					setUserTasks(response.data);
-					console.log(response);
-				}).catch((error) => {
-					console.error(error);
-				});
-			}
-		});
-	}
 
 	useEffect(() => {
 		if (!isLoadedData) {
-			getTasksUser();
-		} else {
-			console.log("userTasks:", userTasks[0]);
+			props.getTasksUser();
+			setLoadedData(true);
+			setTaskLen(props.userTasks.length);
 		}
-	}, [isLoadedData, userTasks]);
+		if (props.userTasks.length == 0) {
+			document.body.style.overflow = 'hidden';
+		} else {
+			document.body.style.overflow = 'auto';
+		}
+	}, [props.userTasks]);
+
+
 
 	return (
-		<View activePanel={props.panel}>
-			<Panel id={props.id}>
-				<Group className='mt-5 '>
-					<Styled>
-						<HeaderMy displayName="Главный экран" go={props.go} leftBtn={<CreateQuestBtn go={props.go} />} />
-						<SplitLayout>
-							<SplitCol>
-								<Group mode="plain" size="l">
-									{userTasks.length > 0 ? (
-										userTasks.map(task => (
-											<CardQuest
-												getTasksUser={getTasksUser}
-												openError={props.openError} openSuccess={props.openSuccess}
-												key={task.id} // Предполагается, что каждая задача имеет уникальный идентификатор
-												vk_id={props.vk_id}
-												id={task.id}
-												title={task.title}
-												description={task.description}
-												image={task.image}
-												reload={getTasksUser}
-											/>
-										))
-									) : (
-										<h1>Нет созданных задач!</h1>
-									)}
+		<>
+			<View activePanel={props.panel}>
+				<Panel className='' id={props.id}>
+					<Group mode="plain" className=''>
+						<Styled>
+							{/* <HeaderMy displayName="Главный экран" go={props.go} leftBtn={<CreateQuestBtn go={props.go} />} /> */}
+							<SplitLayout>
+								<SplitCol>
+									<Group mode="plain" className='pt-5 pb-5' size="l">
+										{props.userTasks.length > 0 ? (
+											props.userTasks.map(task => (
+												<CardQuest
+													getTasksUser={props.getTasksUser}
+													openError={props.openError} openSuccess={props.openSuccess}
+													key={task.id} // Предполагается, что каждая задача имеет уникальный идентификатор
+													vk_id={props.vk_id}
+													id={task.id}
+													title={task.title}
+													description={task.description}
+													image={task.image}
+													reload={props.getTasksUser}
+												/>
+											))
+										) : (
+											<h1 className='mt-5 vh-100 text-center'>Нет созданных задач!</h1>
+										)}
 
-								</Group>
-							</SplitCol>
-						</SplitLayout>
-					</Styled >
-				</Group>
-				<NavbarMy go={props.go} titleBtn='home' />
-			</Panel>
-		</View >
+									</Group>
+								</SplitCol>
+							</SplitLayout>
+						</Styled >
+					</Group>
+				</Panel>
+			</View >
+			{/* <NavbarMy go={props.go} titleBtn='home' /> */}
+		</>
 	);
 }
 Home.propTypes = {

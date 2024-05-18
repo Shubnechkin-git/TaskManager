@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently \"cd frontend && npm start\" \"cd backend && nodemon\"",
     "startBackend": "cd backend && npm start",
-    "startFrontend": "cd frontend && npm start"
+    "startFrontend": "cd frontend && npm start",
+    "deploy": "cd frontend && npm run deploy"
   },
   "repository": {
     "type": "git",

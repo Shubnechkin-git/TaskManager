@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Panel, PanelHeader, PanelHeaderButton, Input, Header, Button, Group, ButtonGroup, FormItem, FormLayout, Card, CardGrid, Epic, Tabbar, TabbarItem } from '@vkontakte/vkui';
+import React, { useEffect, useState } from 'react';
+import { Panel, PanelHeader, PanelHeaderButton, Input, Header, Button, Group, ButtonGroup, FormItem, FormLayout, Card, CardGrid, Epic, Tabbar, TabbarItem, usePlatform } from '@vkontakte/vkui';
 import { Row, Col } from 'react-bootstrap'
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -45,15 +45,18 @@ const NavbarMy = (props) => {
 
     const [activeButton, setActiveButton] = useState(props.titleBtn);
 
+    useEffect(() => {
+        setActiveButton(props.titleBtn);
+    }, [props.titleBtn])
+
     return (
         <>
             <NavbarStyle>
                 <Panel id={props.id}>
                     <Epic id='1'
                         tabbar={
-
-                            <Tabbar>
-                                <TabbarItem onClick={props.go} data-to="calendar">
+                            <Tabbar className={props.activeModal != null && usePlatform() != 'vkcom' && 'd-none'}>
+                                <TabbarItem disabled={props.titleBtn == 'loading' || props.activeModal != null ? true : false} onClick={props.go} data-to="calendar">
                                     <Col className="d-flex justify-content-start nav__btn1 align-items-center">
                                         <div className='btn__border d-flex justify-content-center align-items-center '>
                                             <div className={`nav__btn d-flex justify-content-center align-items-center ${activeButton === 'calendar' ? 'btn__active' : ''}`}>
@@ -62,7 +65,7 @@ const NavbarMy = (props) => {
                                         </div>
                                     </Col>
                                 </TabbarItem>
-                                <TabbarItem onClick={props.go} data-to="home">
+                                <TabbarItem disabled={props.titleBtn == 'loading' || props.activeModal != null ? true : false} onClick={props.go} data-to="home">
                                     <Col className="d-flex justify-content-center nav__btn2 align-items-center" >
                                         <div className='btn__border d-flex justify-content-center align-items-center'>
                                             <div className={`nav__btn d-flex justify-content-center align-items-center ${activeButton === 'home' ? 'btn__active' : ''}`}>
@@ -71,7 +74,7 @@ const NavbarMy = (props) => {
                                         </div>
                                     </Col>
                                 </TabbarItem>
-                                <TabbarItem onClick={props.go} data-to="settings">
+                                <TabbarItem disabled={props.titleBtn == 'loading' || props.activeModal != null ? true : false} onClick={props.go} data-to="settings">
                                     <Col className="d-flex justify-content-end nav__btn3 align-items-center" >
                                         <div className='btn__border d-flex justify-content-center align-items-center'>
                                             <div className={`nav__btn d-flex justify-content-center align-items-center ${activeButton === 'settings' ? 'btn__active' : ''}`}>

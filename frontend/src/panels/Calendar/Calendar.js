@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Panel, PanelHeader, PanelHeaderButton, Input, Header, Button, Group, ButtonGroup, FormItem, FormLayout, Card, CardGrid, View, ModalRoot, ModalPage, ModalCard } from '@vkontakte/vkui';
+import { Panel, PanelHeader, PanelHeaderButton, Input, Header, Button, Group, ButtonGroup, FormItem, FormLayout, Card, CardGrid, View, ModalRoot, ModalPage, ModalCard, SplitLayout, SplitCol } from '@vkontakte/vkui';
 import { Row, Col } from 'react-bootstrap'
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import NavbarMy from '../../Components/NavbarMy';
 import HeaderMy from '../../Components/HeaderMy';
+
+import VKBridge from '@vkontakte/vk-bridge';
 
 import BackBtn from '../../Components/Button/BackBtn';
 import { Icon20AddAlt, Icon20AddCircleFillGreen } from '@vkontakte/icons';
@@ -44,33 +46,37 @@ const Calendar = (props) => {
             props.fetchCounters();
             setLoadedData(true);
         }
+        if (props.userCounters.length == 0) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
     }, [props.userCounters]);
 
     return (
         <>
-            <HeaderMy displayName="Счетчики" go={props.go} leftBtn={<div className='btn__border d-flex justify-content-center align-items-center' onClick={e => props.setActiveModal('create')}>
-                <div className='header__btn d-flex justify-content-center align-items-center'>
-                    <Icon20AddAlt width="12" height="12" />
-                </div>
-            </div>} />
             <View activePanel={props.panel}>
                 <Panel id={props.id}>
-                    <Group className='mt-5'>
-                        <Styled>
-                            {props.userCounters.length > 0 ? (
-                                props.userCounters.map(task => (<>
-                                    <Counter setTitleEdit={props.setTitleEdit} setActiveModal={props.setActiveModal} openError={props.openError} id={task.id} vk_id={props.vk_id} title={task.title} fetchCounters={props.fetchCounters} userCounters={props.userCounters} count={task.count} />
-                                </>
-                                ))
-                            ) : (
-                                null
-                            )}
-
-                        </Styled>
+                    <Group mode="plain" className='vh-100'>
+                        <SplitLayout>
+                            <SplitCol>
+                                <Group mode="plain" className='pt-5 pb-5'>
+                                    <Styled>
+                                        {props.userCounters.length > 0 ? (
+                                            props.userCounters.map(task => (<>
+                                                <Counter setCounter={props.setCounter} setIdEdit={props.setIdEdit}  setEditTitle={props.setEditTitle} handleVibro={props.handleVibro} setTitleEdit={props.setTitleEdit} setActiveModal={props.setActiveModal} openSuccess={props.openSuccess} openError={props.openError} id={task.id} vk_id={props.vk_id} title={task.title} fetchCounters={props.fetchCounters} userCounters={props.userCounters} count={task.count} />
+                                            </>
+                                            ))
+                                        ) : (
+                                            <h1 className='mt-5 text-center'>Нет созданных счетчиков!</h1>
+                                        )}
+                                    </Styled>
+                                </Group>
+                            </SplitCol>
+                        </SplitLayout>
                     </Group>
                 </Panel>
             </View >
-            <NavbarMy go={props.go} titleBtn='calendar' />
         </>)
 }
 

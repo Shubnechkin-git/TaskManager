@@ -62,4 +62,43 @@ export class CountersController {
       return { success: false, err: err, message: err.code };
     }
   }
+
+  @Delete('delete_counter')
+  async deleteCounter(@Query() counterData: counterData): Promise<any> {
+    console.log(counterData);
+
+    try {
+      const deleteCounter = await this.databaseService.deleteCounter(
+        counterData.id,
+        counterData.vk_id,
+      );
+      return {
+        success: true,
+        message: 'Счетчик успешно удален!',
+        data: deleteCounter,
+      };
+    } catch (err) {
+      return { success: false, err: err, message: err.code };
+    }
+  }
+
+  @Put('update_counter')
+  async updateCounter(@Query() counterData: counterData): Promise<any> {
+    console.log(counterData);
+
+    try {
+      const updateCounter = await this.databaseService.updateCounter(
+        counterData.id,
+        counterData.vk_id,
+        counterData.title,
+      );
+      return {
+        success: true,
+        message: 'Счетчик успешно обновлен!',
+        data: updateCounter,
+      };
+    } catch (err) {
+      return { success: false, err: err, message: err.code };
+    }
+  }
 }

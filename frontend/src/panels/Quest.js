@@ -17,7 +17,7 @@ const Quest = (props) => {
 			<Panel id={props.id} >
 				<Styled>
 					<HeaderMy displayName="Создание задачи" go={props.go} leftBtn={<BackBtn go={props.go} />} />
-					<Group className='mt-5'>
+					<Group mode='plain' className='mt-5'>
 						<FormLayout>
 							<FormItem>
 								<Group mode="plain" size="l">

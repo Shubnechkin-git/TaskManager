@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import VKBridge from '@vkontakte/vk-bridge';
 import '@vkontakte/vkui/dist/vkui.css';
-import { View, AdaptivityProvider, AppRoot, ConfigProvider, SplitLayout, SplitCol, ScreenSpinner, Snackbar, ModalRoot, ModalPage, ModalCard, FormItem, Input } from '@vkontakte/vkui';
+import { View, AdaptivityProvider, AppRoot, ConfigProvider, SplitLayout, SplitCol, ScreenSpinner, Snackbar, ModalRoot, ModalPage, ModalCard, FormItem, Input, usePlatform, Platform } from '@vkontakte/vkui';
 
 import Home from './panels/Home';
 import Quest from './panels/Quest';
@@ -15,6 +15,10 @@ import bridge from '@vkontakte/vk-bridge';
 
 import axios from 'axios';
 import { Icon28CheckCircleOutline, Icon28ErrorCircleOutline, Icon56MoneyTransferOutline } from '@vkontakte/icons';
+import Loading from './panels/Loading';
+import NavbarMy from './Components/NavbarMy';
+import HeaderMy from './Components/HeaderMy';
+import CreateQuestBtn from './Components/Button/CreateQuestBtn';
 
 
 const App = () => {
@@ -71,14 +75,28 @@ const App = () => {
 	// Vk bridge start
 	const [userId, setUserId] = useState(null);
 	const [username, setUsername] = useState('username');
+
 	useEffect(() => {
 		// Функция для получения ID пользователя через VK Bridge
 		const fetchUserId = async () => {
 			try {
 				const userInfo = await VKBridge.send('VKWebAppGetUserInfo');
+				VKBridge.send('VKWebAppShowBannerAd', {
+					banner_location: 'bottom'
+				})
+					.then((data) => {
+						if (data.result) {
+							// Баннерная реклама отобразилась
+						}
+					})
+					.catch((error) => {
+						// Ошибка
+						console.log(error);
+					});
 				setUsername(userInfo.first_name);
 				setUserId(userInfo.id);
 				console.log(userInfo);
+
 				// axios.post('user/create_user', {
 				axios.post('https://taskmanagerbackend.cleverapps.io/user/create_user', {
 
@@ -96,8 +114,6 @@ const App = () => {
 			}
 		};
 
-
-
 		// Проверяем наличие данных в localStorage
 		if (localStorage.getItem('sliderIsViewed')) {
 			// Данные присутствуют в кеше
@@ -105,7 +121,7 @@ const App = () => {
 			const parsedData = JSON.parse(localStorage.getItem('sliderIsViewed'));
 			console.log('Тестовые данные:', parsedData);
 			if (parsedData === true) {
-				setActivePanel('home');
+				setActivePanel('loading');//
 				console.log("home");
 			}
 			else {
@@ -118,20 +134,27 @@ const App = () => {
 			setActivePanel('slider');
 			console.log("slider");
 		}
+
 		// Вызываем функцию при монтировании компонента
 		fetchUserId();
+		if (userId) {
+			getTasksUser();
+		}
 	}, []);
 	// Vk bridge end
 	useEffect(() => {
 		const onlineHandler = () => {
-			if (JSON.parse(localStorage.getItem('sliderIsViewed')) === true && userId != null)
+			const parsedData = JSON.parse(localStorage.getItem('sliderIsViewed'));
+			if (parsedData === true)
 				setActivePanel('home'); // Установка активной панели по умолчанию при восстановлении соединения
 			else
 				setActivePanel('slider'); // Установка активной панели по умолчанию при восстановлении соединения
 		};
 
+
+
 		const offlineHandler = () => {
-			setActivePanel(null); // Сброс активной панели при потере соединения
+			setActivePanel('loading'); // Сброс активной панели при потере соединения
 		};
 
 		window.addEventListener('online', onlineHandler);
@@ -143,10 +166,52 @@ const App = () => {
 		};
 	}, []);
 
+
+	const handleVibro = (k) => {
+		let vibrationIs = JSON.parse(localStorage.getItem('vibrationIs')) !== null ? JSON.parse(localStorage.getItem('vibrationIs')) : 'on';
+		if (k == 1) {
+			console.log(vibrationIs);
+			if (vibrationIs == 'on')
+				VKBridge.send('VKWebAppTapticNotificationOccurred', {
+					type: 'success',
+					disable_vibration_fallback: false
+				})
+					.then((data) => {
+						if (data.result) {
+							// Информация передана генератору
+							console.log(data.result);
+						}
+					})
+					.catch((error) => {
+						// Ошибка
+						console.log("1:", error);
+					})
+		}
+		else {
+			if (vibrationIs == 'on')
+				VKBridge.send('VKWebAppTapticNotificationOccurred', {
+					type: 'error',
+					disable_vibration_fallback: false
+				})
+					.then((data) => {
+						if (data.result) {
+							// Информация передана генератору
+							console.log(data.result);
+						}
+					})
+					.catch((error) => {
+						// Ошибка
+						console.log("2:", error);
+					})
+		}
+	}
+
 	const openSuccess = (text) => {
-		if (snackbar) return;
+		setSnackbar(null);
+		handleVibro(1);
 		setSnackbar(
 			<Snackbar
+				duration={3000}
 				onClose={() => setSnackbar(null)}
 				before={<Icon28CheckCircleOutline fill="var(--vkui--color_icon_positive)" />}
 			>
@@ -156,9 +221,11 @@ const App = () => {
 	};
 
 	const openError = (text) => {
-		if (snackbar) return;
+		setSnackbar(null);
+		handleVibro(2);
 		setSnackbar(
 			<Snackbar
+				duration={3000}
 				onClose={() => setSnackbar(null)}
 				before={<Icon28ErrorCircleOutline fill="var(--vkui--color_icon_negative)" />}
 			>
@@ -167,12 +234,13 @@ const App = () => {
 		);
 	};
 
-	const [activeModal, setActiveModal] = useState('null');
+	const [activeModal, setActiveModal] = useState(null);
 
 	const [title, setTitle] = useState(null);
+	const [titleEdit, setEditTitle] = useState('');
 	const [counter, setCounter] = useState([0, 0]);
 
-	const handleChangeTitle = (e) => {
+	const handleChangeTitle = (e, k = 0) => {
 		let value = e.target.value.trim();
 		if (value !== '') {
 			let truncatedValue = value.slice(0, 50);
@@ -184,12 +252,63 @@ const App = () => {
 		}
 	}
 
-	const handleCreate = () => {
+	const handleChangeEditTitle = (e) => {
+		let value = e.target.value.trim();
+		if (value !== '') {
+			let truncatedValue = value.slice(0, 50);
+			setCounter([counter[0], truncatedValue.length]);
+			setEditTitle(truncatedValue);
+		} else {
+			setEditTitle(null);
+			setCounter([counter[0], 0]);
+		}
+	}
+
+	const handleUpdate = () => {
+		console.log(titleEdit);
+		axios.put('path').then((response) => {
+			if (response.data.success) {
+				openSuccess(response.data.message);
+			} else {
+				openError(response.data.message);
+			}
+		}).catch((error) => {
+			openError(error.response.data.message);
+		});
+		console.log(idCounter);
+	}
+
+	const [userTasks, setUserTasks] = useState([]);
+	const [isLoadedData, setIsLoadedData] = useState(false);
+
+	const getTasksUser = () => {
+		if (userId > 0) {
+			axios.get('https://taskmanagerbackend.cleverapps.io/tasks/get', {
+				params: {
+					id: userId
+				}
+			}).then((response) => {
+				setIsLoadedData(true);
+				setUserTasks(response.data);
+				console.log(response);
+				go('home', 1);
+			}).catch((error) => {
+				setIsLoadedData(false);
+				console.error(error);
+			});
+		}
+	}
+
+
+	const handleCreate = (k = 0) => {
 		if (title !== null) {
 			axios.post('https://taskmanagerbackend.cleverapps.io/counters/create_counter', { title, vk_id: userId }).then((response) => {
 				console.log(response);
 				if (response.data.success) {
-					fetchCounters();
+					if (k == 1) {
+						fetchCounters(1);
+					} else
+						fetchCounters(1);
 					setActiveModal(null);
 					setTitle(null);
 					setCounter([0, 0]);
@@ -231,8 +350,10 @@ const App = () => {
 	const [userCounters, setUserCounters] = useState([]);
 	const [isData, setIsData] = useState(false);
 
-	const fetchCounters = () => {
-		setUserCounters([]);
+	const fetchCounters = (k = 0) => {
+		if (k == 1)
+			setUserCounters([]);
+
 		if (userId > 0) {
 			axios.get('https://taskmanagerbackend.cleverapps.io/counters/get', {
 				params: {
@@ -249,7 +370,16 @@ const App = () => {
 		}
 	}
 
-	const [titleEdit, setTitleEdit] = useState(null);
+
+	const [idCounter, setIdEdit] = useState(null);
+
+	const handleCLose = () => {
+		setActiveModal(null);
+		setEditTitle(null);
+		setTitle(null);
+		setIdEdit(null);
+		setCounter([0, 0]);
+	}
 
 	return (
 		<ConfigProvider appearance="dark">
@@ -257,54 +387,61 @@ const App = () => {
 				<AppRoot>
 					<SplitLayout popout={popout}>
 						<SplitCol>
+							{activePanel !== 'slider' &&
+								<HeaderMy setActiveModal={setActiveModal} displayName={activePanel} go={go} leftBtn={<CreateQuestBtn go={go} />} />
+							}
 							{activePanel !== null ? (
 								<View activePanel={activePanel}>
-									<Slider id='slider' username={username} go={go} userId={userId} bridge={bridge} />
-									<Home id='home' username={username} openError={openError} openSuccess={openSuccess} vk_id={userId} panel={activePanel} go={go} />
+									<Slider getTasksUser={getTasksUser} id='slider' username={username} go={go} userId={userId} bridge={bridge} />
+									<Home userTasks={userTasks} isLoadedData={isLoadedData} getTasksUser={getTasksUser} id='home' username={username} openError={openError} openSuccess={openSuccess} vk_id={userId} panel={activePanel} go={go} />
 									<Quest openError={openError} openSuccess={openSuccess} panel={activePanel} id='quest' go={go} />
 									<CreateQuest panel={activePanel} vk_id={userId} id='CreateQuest' go={go} />
 									<Notification panel={activePanel} id='Notification' go={go} />
-									<Calendar setIsData={isData} setTitleEdit={setTitleEdit} openError={openError} fetchCounters={fetchCounters} vk_id={userId} userCounters={userCounters} setActiveModal={setActiveModal} panel={activePanel} id='calendar' go={go} />
+									<Calendar setCounter={setCounter} setIdEdit={setIdEdit} handleVibro={handleVibro} setIsData={isData} setEditTitle={setEditTitle} openError={openError} openSuccess={openSuccess} fetchCounters={fetchCounters} vk_id={userId} userCounters={userCounters} setActiveModal={setActiveModal} panel={activePanel} id='calendar' go={go} />
 									<Settings panel={activePanel} id='settings' go={go} />
+									<Loading id="loading" getTasksUser={getTasksUser} panel={activePanel} go={go} />
 								</View>
 							) : (
 								<ScreenSpinner state="loading" />
 							)
 							}
+							{activePanel !== 'quest' && activePanel !== 'slider' && activePanel !== 'loading' &&
+								<NavbarMy go={go} activeModal={activeModal} titleBtn={activePanel} />
+							}
 							{snackbar}
 						</SplitCol>
 					</SplitLayout>
-					<ModalRoot activeModal={activeModal}>
-						<ModalCard id="create" header="Создание счетчика" onClose={e => setActiveModal(null)}>
-							<FormItem htmlFor="example" top="📝 Название">
-								<Input
-									id="example"
-									type="text"
-									onChange={e => handleChangeTitle(e)}
-									placeholder="Lorem ipsum dolor sit amet"
-								/>
-								{counter[0]}/50
-								<div className='mt-3 container_input d-flex flex-column'>
-									<button onClick={handleCreate} className={counter[0] > 0 ? 'btn__create btn btn-dark' : 'btn__create btn btn-dark disabled'}>Создать задачу</button>
-								</div>
-							</FormItem>
-						</ModalCard>
-						<ModalCard header="Редактирование счетчика" onClose={e => setActiveModal(null)} id="edit">
-							<FormItem htmlFor="example" top="📝 Название">
-								<Input
-									id="example"
-									type="text"
-									value={titleEdit}
-									onChange={e => handleChangeTitle(e)}
-									placeholder="Lorem ipsum dolor sit amet"
-								/>
-								{counter[0]}/50
-								<div className='mt-3 container_input d-flex flex-column'>
-									<button onClick={handleCreate} className={counter[0] > 0 ? 'btn__create btn btn-dark' : 'btn__create btn btn-dark disabled'}>Создать задачу</button>
-								</div>
-							</FormItem></ModalCard>
-					</ModalRoot>
 				</AppRoot>
+				<ModalRoot activeModal={activeModal}>
+					<ModalCard className='mb-5' id="create" header="Создание счетчика" onClose={e => handleCLose()}>
+						<FormItem htmlFor="example" top="📝 Название">
+							<Input
+								id="example"
+								type="text"
+								onChange={e => handleChangeTitle(e)}
+								placeholder="Lorem ipsum dolor sit amet"
+							/>
+							{counter[0]}/50
+							<div className='mt-3 container_input d-flex flex-column'>
+								<button onClick={handleCreate} className={counter[0] > 0 ? 'btn__create btn btn-dark' : 'btn__create btn btn-dark disabled'}>Создать задачу</button>
+							</div>
+						</FormItem>
+					</ModalCard>
+					<ModalCard header="Редактирование счетчика" onClose={e => handleCLose()} id="edit">
+						<FormItem htmlFor="example" top="📝 Название">
+							<Input
+								id="example"
+								type="text"
+								value={titleEdit}
+								onChange={e => handleChangeEditTitle(e)}
+								placeholder="Lorem ipsum dolor sit amet"
+							/>
+							{counter[1]}/50
+							<div className='mt-3 container_input d-flex flex-column'>
+								<button onClick={e => handleUpdate(1)} className={counter[1] > 0 ? 'btn__create btn btn-dark' : 'btn__create btn btn-dark disabled'}>Сохранить</button>
+							</div>
+						</FormItem></ModalCard>
+				</ModalRoot>
 			</AdaptivityProvider>
 		</ConfigProvider>
 	);

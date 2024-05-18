@@ -1,3 +1,5 @@
+import { Icon24MessageOutline } from '@vkontakte/icons';
+import { usePlatform } from '@vkontakte/vkui';
 import React from 'react'
 import styled from 'styled-components';
 
@@ -11,16 +13,6 @@ const Styled = styled.div`
     margin-bottom: 12px;
 }
 
-.description{
-    background-color: #D9D9D9;
-    margin-top: 12px;
-    height: 160px;
-    border-radius: 10px;
-    color: #736D6D;
-    text-decoration: underline;
-    padding: 12px;
-}
-
 .btn-dark{
     margin-top: 12px;
     background-color: #696969;
@@ -31,17 +23,13 @@ const Styled = styled.div`
 }
 `
 
+
 export default function ContactDev() {
     return (
         <Styled>
-            <div>
-                <span className='title fw-bold'>Связяться с разработчиком</span>
-                <div className='container_input d-flex flex-column'>
-                    <textarea className='description' placeholder="У меня возникла проблема в..."></textarea>
-                </div>
-                <div className='container_input d-flex flex-column'>
-                    <button className='btn btn-dark '>Отправить</button>
-                </div>
+            <div >
+                <span className='title fw-bold'>Связяться с разработчиком</span><br />
+                <a href={usePlatform() == 'vkcom' ? 'https://vk.com/write-225028181' : 'https://m.vk.com/write-225028181'} target='_blank' className='btn btn-dark'><span className='d-flex'>Связяться<Icon24MessageOutline className='ms-2' /></span></a>
             </div>
         </Styled>
     )

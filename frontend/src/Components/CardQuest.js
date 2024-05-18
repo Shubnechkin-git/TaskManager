@@ -211,7 +211,7 @@ export default function CardQuest(props) {
                         <div className='quest'>
                             <div className='quest_head w-100  d-flex'>
                                 {props.description !== null ? (
-                                    <div className='img d-flex align-items-center col-1'>
+                                    <div className='img d-flex align-items-center  col-1'>
                                         {props.image !== null && (
                                             <img src={props.image} alt='photo' />
                                         )}
@@ -236,8 +236,8 @@ export default function CardQuest(props) {
                                 )}
                                 {props.description !== null && (
                                     <div className='quest_foot w-100 p-0'>
-                                        <div className='quest_description'>
-                                            <textarea readOnly value={props.description}>
+                                        <div className='quest_description h-100'>
+                                            <textarea  className='h-100' readOnly value={props.description}>
                                             </textarea>
                                         </div>
                                     </div>

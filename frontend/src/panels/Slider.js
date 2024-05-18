@@ -17,7 +17,7 @@ const Styled = styled.div`
 `
 
 
-const Slider = ({ id, go, userId, bridge, username }) => {
+const Slider = ({ id, go, userId, bridge, username, getTasksUser }) => {
 
     if (userId !== undefined && userId !== null) {
         console.log(userId);
@@ -157,7 +157,7 @@ const Slider = ({ id, go, userId, bridge, username }) => {
                     </div>
                     <div className='slider__btn'>
                         <Styled>
-                            <Button className='w-100 disabled' id="btn" onClick={go} data-to="home">ПОНЯТНО</Button>
+                            <Button className='w-100 disabled' id="btn" onClick={getTasksUser} data-to="home">ПОНЯТНО</Button>
                         </Styled>
                     </div>
                 </Swiper >

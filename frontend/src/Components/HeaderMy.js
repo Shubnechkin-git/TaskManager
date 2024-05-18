@@ -5,6 +5,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Icon20AddAlt } from '@vkontakte/icons';
 import { Icon20NotificationOutline } from '@vkontakte/icons';
+import BackBtn from './Button/BackBtn';
+import CreateQuestBtn from './Button/CreateQuestBtn';
+import VKBridge from '@vkontakte/vk-bridge';
+
 const HeaderStyle = styled.div`
     .header{
         height: 50px;
@@ -48,17 +52,36 @@ const HeaderStyle = styled.div`
 `
 
 const HeaderMy = (props) => {
+
+    const handleCLick = () => {
+        props.setActiveModal('create');
+        // VKBridge.send('VKWebAppHideBannerAd')
+        //     .then((data) => {
+        //         if (data.result) {
+        //             // Баннерная реклама скрыта
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         // Ошибка
+        //         console.log(error);
+        //     });
+    }
+
     return (
         <>
-            <Panel id={props.id}>
+            <Panel id={props.id} >
                 <HeaderStyle>
                     <div className='header' id="header">
                         <Row className='header_row'>
                             <Col col="4" className='header__col col__1 d-flex justify-content-start align-items-center'>
-                                {props.leftBtn}
+                                {props.displayName == 'quest' ? <BackBtn go={props.go} /> : props.displayName == 'home' ? <CreateQuestBtn  go={props.go} /> : props.displayName == 'calendar' ? <div className='btn__border d-flex justify-content-center align-items-center' onClick={e => handleCLick()}>
+                                    <div className='header__btn d-flex justify-content-center align-items-center'>
+                                        <Icon20AddAlt width="12" height="12" />
+                                    </div>
+                                </div> : props.displayName == 'settings' ? null : null}
                             </Col>
                             <Col col="4" className='header__col col__2 d-flex justify-content-center align-items-center text-center'>
-                                <span className='text-nowrap'>{props.displayName}</span>
+                                <span className='text-nowrap'>{props.displayName == 'home' ? 'Главный экран' : props.displayName == 'calendar' ? 'Счетчики' : props.displayName == 'settings' ? 'Настройки' : props.displayName == 'quest' ? 'Создание задачи' : props.displayName == 'loading' ? 'Загрузка' : props.displayName}</span>
                             </Col>
                             <Col col="4" className='header__col col__3 d-flex justify-content-end align-items-center'>
                                 {/* <div className='btn__border d-flex justify-content-center align-items-center'>

@@ -171,6 +171,38 @@ export class DatabaseService {
     }
   }
 
+  async deleteCounter(id, vk_id) {
+    const connection = await this.pool.getConnection();
+    try {
+      const [rows] = await connection.execute(
+        `UPDATE user_counters SET status = 'deleted' WHERE id=${id} AND vk_id=${vk_id}`,
+      );
+      // console.log('result:', rows);
+      return rows;
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+      return 'Повторите позже!'; // Вернуть null или другое значение по умолчанию в случае ошибки
+    } finally {
+      connection.release();
+    }
+  }
+
+  async updateCounter(id, vk_id, title) {
+    const connection = await this.pool.getConnection();
+    try {
+      const [rows] = await connection.execute(
+        `UPDATE user_counters SET title= '${title}', status = 'deleted' WHERE id=${id} AND vk_id=${vk_id}`,
+      );
+      // console.log('result:', rows);
+      return rows;
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+      return 'Повторите позже!'; // Вернуть null или другое значение по умолчанию в случае ошибки
+    } finally {
+      connection.release();
+    }
+  }
+
   async deleteTask(id, vk_id) {
     const connection = await this.pool.getConnection();
     try {
