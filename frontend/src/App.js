@@ -266,7 +266,7 @@ const App = () => {
 
 	const handleUpdate = () => {
 		console.log(titleEdit);
-		axios.put('https://taskmanagerbackend.cleverapps.io/counters/update_counter', { params: { vk_id: userId, id: idCounter, title: titleEdit } }).then((response) => {
+		axios.put('https://taskmanagerbackend.cleverapps.io/counters/update_counter', { vk_id: userId, id: idCounter, title: titleEdit }).then((response) => {
 			if (response.data.success) {
 				openSuccess(response.data.message);
 			} else {
