@@ -50,8 +50,9 @@ export default function Counter(props) {
         props.setIdEdit(props.id);
         props.setActiveModal('edit');
     }
+    
     const handleDelete = (id, vk_id) => {
-        axios.delete('https://localhost:5000/counters/delete_counter', { params: { id: props.id, vk_id: props.vk_id } }).then((response) => {
+        axios.delete('https://taskmanagerbackend.cleverapps.io/counters/delete_counter', { params: { id: props.id, vk_id: props.vk_id } }).then((response) => {
             if (response.data.success) {
                 props.fetchCounters(0);
                 props.openSuccess(response.data.message);
