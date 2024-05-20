@@ -268,6 +268,7 @@ const App = () => {
 		console.log(titleEdit);
 		axios.put('https://taskmanagerbackend.cleverapps.io/counters/update_counter', { id: idCounter, vk_id: userId, title: titleEdit }).then((response) => {
 			if (response.data.success) {
+				fetchCounters();
 				openSuccess(response.data.message);
 			} else {
 				openError(response.data.message);
