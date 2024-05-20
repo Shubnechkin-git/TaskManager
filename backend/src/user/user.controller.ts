@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { VkUserData } from '../interface/vkUserData';
 
@@ -37,4 +37,3 @@ export class UserController {
     }
   }
 }
-

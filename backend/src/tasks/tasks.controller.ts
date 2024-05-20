@@ -1,22 +1,10 @@
 // tasks.controller.ts
 
-import {
-  Controller,
-  Get,
-  Query,
-  Body,
-  Post,
-  Param,
-  UseInterceptors,
-  Delete,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
 
-import { FileInterceptor } from '@nestjs/platform-express';
-import { Express } from 'express';
-import { Multer } from 'multer';
 import { DatabaseService } from 'src/database/database.service';
-import { VkUserData } from '../interface/vkUserData';
 import { taskData } from 'src/interface/taskData';
+import { VkUserData } from '../interface/vkUserData';
 
 @Controller('tasks')
 export class TasksController {

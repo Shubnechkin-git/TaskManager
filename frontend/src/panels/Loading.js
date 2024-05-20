@@ -1,22 +1,22 @@
-import { Group, Panel, ScreenSpinner, View } from '@vkontakte/vkui'
-import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types';
+import { Panel, ScreenSpinner, View } from "@vkontakte/vkui";
+import PropTypes from "prop-types";
+import React from "react";
 
 const Loading = (props) => {
+  props.getTasksUser();
 
-    props.getTasksUser()
-
-    return (<View activePanel={props.panel}>
-        <Panel id={props.id}>
-            <ScreenSpinner state="loading" />
-        </Panel>
+  return (
+    <View activePanel={props.panel}>
+      <Panel id={props.id}>
+        <ScreenSpinner state="loading" />
+      </Panel>
     </View>
-    )
-}
+  );
+};
 
 Loading.propTypes = {
-    id: PropTypes.string.isRequired,
-    go: PropTypes.func.isRequired,
-}
+  id: PropTypes.string.isRequired,
+  go: PropTypes.func.isRequired,
+};
 
-export default Loading; 
+export default Loading;

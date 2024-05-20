@@ -1,24 +1,26 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Icon20AddAlt, Icon28CheckCircleOutline, Icon28ErrorCircleOutline } from '@vkontakte/icons';
-import { Snackbar } from '@vkontakte/vkui';
+import { Icon20AddAlt } from "@vkontakte/icons";
+import PropTypes from "prop-types";
+import React from "react";
 
 const CreateQuestBtn = (props) => {
-
-    return (
-        <>
-            <div className='btn__border d-flex justify-content-center align-items-center' onClick={props.go} data-to="quest">
-                <div className='header__btn d-flex justify-content-center align-items-center'>
-                    <Icon20AddAlt width="12" height="12" />
-                </div>
-            </div>
-        </>
-    )
-}
+  return (
+    <>
+      <div
+        className="btn__border d-flex justify-content-center align-items-center"
+        onClick={props.go}
+        data-to="quest"
+      >
+        <div className="header__btn d-flex justify-content-center align-items-center">
+          <Icon20AddAlt width="12" height="12" />
+        </div>
+      </div>
+    </>
+  );
+};
 
 CreateQuestBtn.propTypes = {
-    // id: PropTypes.string.isRequired,
-    go: PropTypes.func.isRequired,
+  // id: PropTypes.string.isRequired,
+  go: PropTypes.func.isRequired,
 };
 
 export default CreateQuestBtn;

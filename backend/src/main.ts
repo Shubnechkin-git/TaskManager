@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
+import * as cors from 'cors';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const fs = require('fs');

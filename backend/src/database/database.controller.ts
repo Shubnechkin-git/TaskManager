@@ -1,7 +1,5 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { query } from 'express';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import * as mysql from 'mysql2/promise';
-import { VkUserData } from '../interface/vkUserData';
 import { DatabaseService } from './database.service';
 
 // @Request, @Req — req;

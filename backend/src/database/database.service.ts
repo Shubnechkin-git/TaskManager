@@ -1,6 +1,5 @@
 import { Injectable, Query } from '@nestjs/common';
 import * as mysql from 'mysql2/promise';
-import * as fs from 'fs';
 
 @Injectable()
 export class DatabaseService {

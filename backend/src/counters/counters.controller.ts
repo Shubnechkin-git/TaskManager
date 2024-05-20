@@ -1,15 +1,13 @@
 import { DatabaseService } from 'src/database/database.service';
 
 import {
-  Controller,
-  Get,
-  Query,
   Body,
-  Post,
-  Param,
-  UseInterceptors,
+  Controller,
   Delete,
+  Get,
+  Post,
   Put,
+  Query,
 } from '@nestjs/common';
 
 import { counterData } from 'src/interface/counterData';
