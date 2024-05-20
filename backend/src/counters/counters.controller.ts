@@ -83,7 +83,7 @@ export class CountersController {
   }
 
   @Put('update_counter')
-  async updateCounter(@Query() counterData: counterData): Promise<any> {
+  async updateCounter(@Body() counterData: counterData): Promise<any> {
     console.log(counterData);
 
     try {

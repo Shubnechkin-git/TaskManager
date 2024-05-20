@@ -191,7 +191,7 @@ export class DatabaseService {
     const connection = await this.pool.getConnection();
     try {
       const [rows] = await connection.execute(
-        `UPDATE user_counters SET title= '${title}', status = 'deleted' WHERE id=${id} AND vk_id=${vk_id}`,
+        `UPDATE user_counters SET title= '${title}' WHERE id=${id} AND vk_id=${vk_id}`,
       );
       // console.log('result:', rows);
       return rows;
