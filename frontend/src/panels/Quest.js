@@ -4,7 +4,7 @@ import { React } from "react";
 import { FormItem, FormLayout, Group, Panel, View } from "@vkontakte/vkui";
 import BackBtn from "../Components/Button/BackBtn";
 import HeaderMy from "../Components/HeaderMy";
-import CreateQuest from "./Quest/CreateQuest";
+import CreateQuest from "./CreateQuest";
 
 const Quest = (props) => {
   return (

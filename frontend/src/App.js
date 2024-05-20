@@ -18,12 +18,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 
 import bridge from "@vkontakte/vk-bridge";
-import Calendar from "./panels/Calendar/Calendar";
+import Calendar from "./panels/Calendar";
 import Home from "./panels/Home";
-import Notification from "./panels/Notification/Notification";
 import Quest from "./panels/Quest";
-import CreateQuest from "./panels/Quest/CreateQuest";
-import Settings from "./panels/Setting/Settings";
+import CreateQuest from "./panels/CreateQuest";
+import Settings from "./panels/Settings";
 import Slider from "./panels/Slider";
 
 import {
@@ -424,7 +423,6 @@ const App = () => {
                     id="CreateQuest"
                     go={go}
                   />
-                  <Notification panel={activePanel} id="Notification" go={go} />
                   <Calendar
                     setCounter={setCounter}
                     setIdEdit={setIdEdit}

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import Counter from "../../Components/Counter";
+import Counter from "../Components/Counter";
 
 const Styled = styled.div`
   .chet__body {
@@ -54,7 +54,7 @@ const Calendar = (props) => {
                 <Group mode="plain" className="pt-5 pb-5">
                   <Styled>
                     {props.userCounters.length > 0 ? (
-                      props.userCounters.map((task) => (
+                      props.userCounters.map((task, index) => (
                         <>
                           <Counter
                             setCounter={props.setCounter}
