@@ -487,7 +487,7 @@ const App = () => {
                       : "btn__create btn btn-dark disabled"
                   }
                 >
-                  Создать задачу
+                  Создать
                 </button>
               </div>
             </FormItem>
